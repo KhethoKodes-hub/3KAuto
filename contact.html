@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>3K Auto Body Repairs | Contact Mma Dipente - Mother of Paint</title>
+    <!-- Tailwind CSS + Google Fonts + Font Awesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #0a0a0a;
+            overflow-x: hidden;
+        }
+        /* car light sweep & blink animations */
+        @keyframes lightSweep {
+            0% { background-position: -200% center; opacity: 0.4; }
+            40% { opacity: 0.9; }
+            100% { background-position: 200% center; opacity: 0.3; }
+        }
+        @keyframes blinkFast {
+            0%, 100% { opacity: 0.2; text-shadow: 0 0 2px #fff; }
+            50% { opacity: 1; text-shadow: 0 0 12px #ffdd88, 0 0 6px #ffaa33; }
+        }
+        @keyframes pulseRing {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+        .car-light-sweep {
+            background: linear-gradient(90deg, rgba(255,255,240,0.03) 0%, rgba(255,220,100,0.5) 25%, rgba(255,255,210,0.85) 50%, rgba(255,220,100,0.5) 75%, rgba(255,255,240,0.03) 100%);
+            background-size: 200% auto;
+            animation: lightSweep 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .blinking-led {
+            animation: blinkFast 1.2s ease-in-out infinite;
+        }
+        .contact-card {
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1);
+        }
+        .ring-animation {
+            position: relative;
+        }
+        .ring-animation::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,215,0,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            animation: pulseRing 1.5s infinite;
+            pointer-events: none;
+        }
+        .input-focus-glow:focus {
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.2), 0 0 0 1px rgba(255,255,255,0.5);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-200">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="bg-black/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-4 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-car-side text-3xl text-gray-300 blinking-led"></i>
+                <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent">3K AUTO</span>
+                <span class="text-xs font-light border-l border-white/30 pl-2 ml-1 hidden sm:inline">BODY REPAIRS</span>
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="index.html" class="hover:text-white text-gray-300 transition">HOME</a>
+                <a href="about.html" class="hover:text-white text-gray-300 transition">ABOUT</a>
+                <a href="services.html" class="hover:text-white text-gray-300 transition">SERVICES</a>
+                <a href="contact.html" class="hover:text-white text-white border-b-2 border-white/60 pb-1">CONTACT</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="#" class="hidden sm:inline-block px-5 py-2 text-sm font-semibold rounded-full bg-white text-black hover:bg-gray-200 transition shadow-lg">GET QUOTE</a>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl focus:outline-none"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden flex-col bg-black/95 border-t border-white/10 px-6 pb-5 space-y-3 text-base font-medium">
+            <a href="index.html" class="block py-2 text-gray-200 hover:text-white">HOME</a>
+            <a href="about.html" class="block py-2 text-gray-200 hover:text-white">ABOUT</a>
+            <a href="services.html" class="block py-2 text-gray-200 hover:text-white">SERVICES</a>
+            <a href="contact.html" class="block py-2 text-white">CONTACT</a>
+            <a href="contact.html" class="block py-2 text-center bg-white text-black rounded-full mt-2">GET QUOTE</a>
+        </div>
+    </nav>
+
+    <!-- ========== HERO SECTION with car light animation ========== -->
+    <section class="relative overflow-hidden bg-black">
+        <div class="absolute inset-0 car-light-sweep opacity-40 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black"></div>
+        <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-20 md:py-28 z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/20 mb-5">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                    </span>
+                    <span class="text-xs uppercase tracking-wider text-gray-300">Reach Mma Dipente</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">
+                    <span class="text-white">Let's Connect</span><br>
+                    <span class="bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">Get Your Free Estimate</span>
+                </h1>
+                <p class="text-gray-300 text-xl mt-6 max-w-2xl mx-auto leading-relaxed">
+                    Whether you need a quote, expert advice, or want to experience Red Seal craftsmanship — Mma Dipente and the team are ready to assist.
+                </p>
+            </div>
+        </div>
+        <!-- animated car light strip bottom -->
+        <div class="flex justify-center gap-3 pb-5">
+            <div class="w-10 h-1.5 bg-white/40 rounded-full blinking-led"></div>
+            <div class="w-10 h-1.5 bg-gray-500/60 rounded-full"></div>
+            <div class="w-10 h-1.5 bg-white/40 rounded-full blinking-led"></div>
+        </div>
+    </section>
+
+    <!-- ========== MAIN CONTACT SECTION: FORM + DETAILS ========== -->
+    <section class="py-20 bg-gradient-to-b from-black to-neutral-950">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Information Cards -->
+                <div class="space-y-8">
+                    <div>
+                        <span class="text-gray-400 uppercase tracking-wider text-sm bg-white/5 px-4 py-1.5 rounded-full border border-white/10 inline-block mb-5"><i class="fas fa-heart mr-2 text-red-400"></i> Get In Touch</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white">Speak with <span class="text-gray-300">Mma Dipente</span></h2>
+                        <p class="text-gray-400 mt-3 leading-relaxed">We pride ourselves on personal service. Kelebogile responds to every inquiry personally — expect honest advice, transparent pricing, and genuine care.</p>
+                    </div>
+                    
+                    <!-- Contact Details Cards -->
+                    <div class="bg-white/5 rounded-2xl border border-white/10 p-6 contact-card">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center ring-animation relative">
+                                <i class="fas fa-phone-alt text-xl text-gray-200"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">Call or WhatsApp</h3>
+                                <p class="text-2xl font-bold text-gray-200 tracking-tight">+27 (0) 82 123 4567</p>
+                                <p class="text-gray-400 text-sm">Mon-Fri: 8am–5:30pm | Sat: 8am–1pm</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white/5 rounded-2xl border border-white/10 p-6 contact-card">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                                <i class="fas fa-envelope text-xl text-gray-200"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">Email Us</h3>
+                                <p class="text-xl font-medium text-gray-200">info@3kautobody.co.za</p>
+                                <p class="text-gray-400 text-sm">We reply within 24 hours</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white/5 rounded-2xl border border-white/10 p-6 contact-card">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-xl text-gray-200"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">Workshop Location</h3>
+                                <p class="text-gray-200">Midrand / Pretoria region, Gauteng</p>
+                                <p class="text-gray-400 text-sm">Exact address provided upon appointment</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="bg-white/5 rounded-2xl border border-white/10 p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Follow Mma Dipente</h3>
+                        <div class="flex gap-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fab fa-instagram text-gray-200"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fab fa-facebook-f text-gray-200"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fab fa-whatsapp text-gray-200"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fab fa-tiktok text-gray-200"></i></a>
+                        </div>
+                        <div class="mt-4 flex items-center gap-2">
+                            <i class="fas fa-check-circle text-green-500 text-sm"></i>
+                            <span class="text-gray-400 text-xs">Follow for behind-the-scenes & paint transformations</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-8 shadow-2xl">
+                    <div class="mb-6 text-center">
+                        <i class="fas fa-paintbrush-fine text-3xl text-gray-300 blinking-led mb-2"></i>
+                        <h3 class="text-2xl font-bold text-white">Request Your Free Estimate</h3>
+                        <p class="text-gray-400 text-sm mt-1">Fill out the form and Mma Dipente will respond personally</p>
+                    </div>
+                    
+                    <form id="contactForm" class="space-y-5">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Full Name *</label>
+                                <input type="text" id="name" required class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Phone Number *</label>
+                                <input type="tel" id="phone" required class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Email Address *</label>
+                            <input type="email" id="email" required class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Vehicle Make, Model & Year</label>
+                            <input type="text" id="vehicle" placeholder="e.g., Toyota Hilux 2020" class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Service Needed *</label>
+                            <select id="service" required class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white focus:border-gray-400 transition">
+                                <option value="" disabled selected>Select a service</option>
+                                <option>Spray Painting & Refinishing</option>
+                                <option>Panel Beating & Dent Removal</option>
+                                <option>Collision Repair</option>
+                                <option>Colour Matching</option>
+                                <option>Detailing & Paint Correction</option>
+                                <option>Custom Airbrushing</option>
+                                <option>Not sure / General inquiry</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Message / Details *</label>
+                            <textarea id="message" rows="4" required placeholder="Describe the damage, areas needing repair, or any questions..." class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow"></textarea>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                            <i class="fas fa-lock text-xs"></i>
+                            <span>Your info is private. We'll get back within 24h.</span>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-white text-black font-bold py-3.5 rounded-xl hover:bg-gray-200 transition flex items-center justify-center gap-2 group">
+                            <i class="fas fa-paper-plane group-hover:translate-x-1 transition"></i>
+                            Send Message & Get Quote
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 pt-4 border-t border-white/10 text-center">
+                        <div class="flex justify-center gap-1 mb-2">
+                            <div class="w-2 h-2 rounded-full bg-yellow-400 blinking-led"></div>
+                            <div class="w-2 h-2 rounded-full bg-white/40"></div>
+                            <div class="w-2 h-2 rounded-full bg-yellow-400 blinking-led"></div>
+                        </div>
+                        <p class="text-gray-500 text-xs">“Mma Dipente” personally reads every message</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ========== WHY CONTACT US SECTION (value props) ========== -->
+    <section class="py-16 bg-black">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+                <div class="p-6">
+                    <i class="fas fa-clock text-3xl text-gray-300 mb-3 blinking-led"></i>
+                    <h4 class="text-xl font-bold text-white">Fast Response</h4>
+                    <p class="text-gray-400 text-sm">Quotes within 24 hours. Transparent timelines.</p>
+                </div>
+                <div class="p-6">
+                    <i class="fas fa-hand-sparkles text-3xl text-gray-300 mb-3"></i>
+                    <h4 class="text-xl font-bold text-white">Red Seal Guarantee</h4>
+                    <p class="text-gray-400 text-sm">Every estimate backed by master craftsmanship.</p>
+                </div>
+                <div class="p-6">
+                    <i class="fas fa-car text-3xl text-gray-300 mb-3"></i>
+                    <h4 class="text-xl font-bold text-white">Free Assessment</h4>
+                    <p class="text-gray-400 text-sm">No-obligation inspection & detailed quote.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ========== MAP / LOCATION HIGHLIGHT ========== -->
+    <section class="py-16 bg-gradient-to-b from-neutral-950 to-black border-y border-white/10">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="text-center mb-8">
+                <i class="fas fa-location-dot text-3xl text-gray-300 mb-2"></i>
+                <h3 class="text-2xl font-bold text-white">Visit Our Workshop</h3>
+                <p class="text-gray-400 mt-2">Conveniently located in Gauteng — serving Midrand, Pretoria, Johannesburg and surrounds</p>
+            </div>
+            <div class="bg-white/5 rounded-2xl border border-white/10 p-4 text-center">
+                <div class="w-full h-64 bg-gray-800 rounded-xl flex flex-col items-center justify-center gap-3">
+                    <i class="fas fa-map-marked-alt text-5xl text-gray-500"></i>
+                    <p class="text-gray-400 text-sm">📍 Exact address provided upon appointment confirmation</p>
+                    <p class="text-gray-500 text-xs">We operate by appointment to ensure personal attention</p>
+                    <div class="flex gap-2 mt-2">
+                        <i class="fas fa-phone-alt text-gray-500"></i>
+                        <span class="text-gray-400 text-sm">Call ahead: +27 (0) 82 123 4567</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ========== BUSINESS HOURS + NOTE ========== -->
+    <section class="py-16 bg-black">
+        <div class="max-w-4xl mx-auto px-5 text-center">
+            <div class="bg-white/5 rounded-2xl border border-white/10 p-8">
+                <i class="fas fa-calendar-alt text-3xl text-gray-300 mb-3"></i>
+                <h3 class="text-2xl font-bold text-white">Workshop Hours</h3>
+                <div class="grid sm:grid-cols-2 gap-4 mt-6 max-w-md mx-auto">
+                    <div class="text-left">
+                        <p class="text-gray-300"><span class="text-white font-semibold">Monday - Friday:</span> 8:00 – 17:30</p>
+                        <p class="text-gray-300 mt-2"><span class="text-white font-semibold">Saturday:</span> 8:00 – 13:00</p>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-gray-300"><span class="text-white font-semibold">Sunday:</span> Closed</p>
+                        <p class="text-gray-400 text-sm mt-2">Emergency inquiries? WhatsApp anytime.</p>
+                    </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 text-gray-400 text-sm">
+                    <i class="fas fa-heart text-red-500"></i> After-hours & mobile assessments available on request
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ========== FAQ ACCORDION (quick answers) ========== -->
+    <section class="py-16 bg-gradient-to-b from-neutral-950 to-black">
+        <div class="max-w-4xl mx-auto px-5">
+            <h3 class="text-2xl font-bold text-white text-center mb-8">Quick Answers <span class="text-gray-300">Before You Call</span></h3>
+            <div class="space-y-4">
+                <div class="bg-white/5 rounded-xl border border-white/10 p-5">
+                    <p class="font-semibold text-white"><i class="fas fa-question-circle text-gray-400 mr-2"></i> Do you provide free estimates?</p>
+                    <p class="text-gray-400 text-sm mt-1">Yes, absolutely. We offer free, no-obligation quotes for all auto body repairs.</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-5">
+                    <p class="font-semibold text-white"><i class="fas fa-question-circle text-gray-400 mr-2"></i> Can I visit the workshop without an appointment?</p>
+                    <p class="text-gray-400 text-sm mt-1">We recommend booking an appointment so Mma Dipente can personally attend to your vehicle without wait times.</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-5">
+                    <p class="font-semibold text-white"><i class="fas fa-question-circle text-gray-400 mr-2"></i> Do you assist with insurance claims?</p>
+                    <p class="text-gray-400 text-sm mt-1">Yes, we work with all major insurers and help streamline the claims process for accident repairs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-black border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-2"><i class="fas fa-car-side text-2xl text-gray-400"></i><span class="text-xl font-bold text-white">3K Auto Body</span></div>
+                <p class="text-gray-500 text-sm mt-3">Red Seal spray painting, panel beating & female-led empowerment. Where quality meets heart.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Quick Links</h4>
+                <ul class="space-y-2 text-sm text-gray-400"><li><a href="#" class="hover:text-white">Home</a></li><li><a href="#" class="hover:text-white">About Mma Dipente</a></li><li><a href="#" class="hover:text-white">Services</a></li><li><a href="#" class="hover:text-white">Contact</a></li></ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Our Promise</h4>
+                <p class="text-gray-400 text-sm">Honest assessments, rural development initiatives, and world-class auto body repairs by a certified master craftswoman.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Connect</h4>
+                <p class="text-gray-400 text-sm"><i class="fas fa-phone-alt mr-2"></i> +27 (0) 82 123 4567</p>
+                <p class="text-gray-400 text-sm mt-1"><i class="fas fa-envelope mr-2"></i> info@3kautobody.co.za</p>
+            </div>
+        </div>
+        <div class="text-center text-gray-600 text-xs mt-12 pt-6 border-t border-white/5">© 2025 3K Auto Body Repairs — "Mother of Paint" Craftsmanship. All rights reserved.</div>
+    </footer>
+
+    <script>
+        // mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if(menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // contact form handling with visual feedback
+        const form = document.getElementById('contactForm');
+        if(form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // collect basic data for demo alert
+                const name = document.getElementById('name')?.value || '';
+                const service = document.getElementById('service')?.value || '';
+                alert(`✨ Thank you ${name}! Your ${service} request has been sent.\n\nMma Dipente will contact you within 24 hours with a free estimate.`);
+                form.reset();
+            });
+        }
+    </script>
+</body>
+</html>

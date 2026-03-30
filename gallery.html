@@ -1,0 +1,433 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>3K Auto Body Repairs | Gallery - Mma Dipente's Masterpieces</title>
+    <!-- Tailwind CSS + Google Fonts + Font Awesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #0a0a0a;
+            overflow-x: hidden;
+        }
+        /* car light sweep & blink animations */
+        @keyframes lightSweep {
+            0% { background-position: -200% center; opacity: 0.4; }
+            40% { opacity: 0.9; }
+            100% { background-position: 200% center; opacity: 0.3; }
+        }
+        @keyframes blinkFast {
+            0%, 100% { opacity: 0.2; text-shadow: 0 0 2px #fff; }
+            50% { opacity: 1; text-shadow: 0 0 12px #ffdd88, 0 0 6px #ffaa33; }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .car-light-sweep {
+            background: linear-gradient(90deg, rgba(255,255,240,0.03) 0%, rgba(255,220,100,0.5) 25%, rgba(255,255,210,0.85) 50%, rgba(255,220,100,0.5) 75%, rgba(255,255,240,0.03) 100%);
+            background-size: 200% auto;
+            animation: lightSweep 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .blinking-led {
+            animation: blinkFast 1.2s ease-in-out infinite;
+        }
+        .gallery-item {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.2);
+        }
+        .image-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .image-overlay {
+            opacity: 0.7;
+        }
+        /* Masonry grid style */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        @media (min-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-200">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="bg-black/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-4 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-car-side text-3xl text-gray-300 blinking-led"></i>
+                <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent">3K AUTO</span>
+                <span class="text-xs font-light border-l border-white/30 pl-2 ml-1 hidden sm:inline">BODY REPAIRS</span>
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#" class="hover:text-white text-gray-300 transition">HOME</a>
+                <a href="#" class="hover:text-white text-gray-300 transition">ABOUT</a>
+                <a href="#" class="hover:text-white text-gray-300 transition">SERVICES</a>
+                <a href="#" class="hover:text-white text-gray-300 transition">GALLERY</a>
+                <a href="#" class="hover:text-white text-white border-b-2 border-white/60 pb-1">CONTACT</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="#" class="hidden sm:inline-block px-5 py-2 text-sm font-semibold rounded-full bg-white text-black hover:bg-gray-200 transition shadow-lg">GET QUOTE</a>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl focus:outline-none"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden flex-col bg-black/95 border-t border-white/10 px-6 pb-5 space-y-3 text-base font-medium">
+            <a href="#" class="block py-2 text-gray-200 hover:text-white">HOME</a>
+            <a href="#" class="block py-2 text-gray-200 hover:text-white">ABOUT</a>
+            <a href="#" class="block py-2 text-gray-200 hover:text-white">SERVICES</a>
+            <a href="#" class="block py-2 text-gray-200 hover:text-white">GALLERY</a>
+            <a href="#" class="block py-2 text-white">CONTACT</a>
+            <a href="#" class="block py-2 text-center bg-white text-black rounded-full mt-2">GET QUOTE</a>
+        </div>
+    </nav>
+
+    <!-- ========== HERO SECTION with car light animation ========== -->
+    <section class="relative overflow-hidden bg-black">
+        <div class="absolute inset-0 car-light-sweep opacity-40 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black"></div>
+        <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-20 md:py-28 z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/20 mb-5">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                    </span>
+                    <span class="text-xs uppercase tracking-wider text-gray-300">Mma Dipente's Portfolio</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">
+                    <span class="text-white">Our Masterpieces</span><br>
+                    <span class="bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">Before & After</span>
+                </h1>
+                <p class="text-gray-300 text-xl mt-6 max-w-2xl mx-auto leading-relaxed">
+                    Witness the transformation — from dents and scratches to flawless finishes. Each vehicle restored with Red Seal precision by the Mother of Paint.
+                </p>
+            </div>
+        </div>
+        <div class="flex justify-center gap-3 pb-5">
+            <div class="w-10 h-1.5 bg-white/40 rounded-full blinking-led"></div>
+            <div class="w-10 h-1.5 bg-gray-500/60 rounded-full"></div>
+            <div class="w-10 h-1.5 bg-white/40 rounded-full blinking-led"></div>
+        </div>
+    </section>
+
+    <!-- ========== GALLERY GRID - 13 PLACEHOLDERS ========== -->
+    <section class="py-20 bg-gradient-to-b from-black to-neutral-950">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+            <div class="text-center mb-14">
+                <span class="text-gray-400 uppercase tracking-wider text-sm bg-white/5 px-4 py-1.5 rounded-full border border-white/10"><i class="fas fa-images mr-2"></i> Recent Projects</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-5 text-white">Flawless <span class="text-gray-300">Transformations</span></h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-gray-400 to-white mx-auto mt-5 rounded-full"></div>
+                <p class="text-gray-400 max-w-2xl mx-auto mt-5">Browse through our recent work — spray painting, panel beating, collision repairs, and custom finishes.</p>
+            </div>
+
+            <div class="gallery-grid">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Before+%26+After+Spray+Painting" alt="Spray painting transformation" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Full Respray - Metallic Black</p>
+                                <p class="text-xs text-gray-200">Complete color transformation</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-spray-can-sparkles mr-2 text-gray-400"></i>Flawless Finish | Red Seal Quality</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.05s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Panel+Beating+Restoration" alt="Panel beating before after" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Major Dent Repair</p>
+                                <p class="text-xs text-gray-200">Structural restoration</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-hammer mr-2 text-gray-400"></i>Precision Panel Beating</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.1s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Collision+Repair+Before+After" alt="Collision repair" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Full Collision Repair</p>
+                                <p class="text-xs text-gray-200">Frame straightening + respray</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-car-crash mr-2 text-gray-400"></i>Accident Damage Restored</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 4 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.15s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Custom+Airbrushing+Artwork" alt="Custom airbrushing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Custom Airbrushing</p>
+                                <p class="text-xs text-gray-200">Unique graphic design</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-brush mr-2 text-gray-400"></i>Mma Dipente's Signature Art</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 5 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.2s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Color+Matching+Perfection" alt="Color matching" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Invisible Repair</p>
+                                <p class="text-xs text-gray-200">Advanced color matching</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-eye-dropper mr-2 text-gray-400"></i>Perfect Color Match</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 6 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.25s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Detailing+%26+Paint+Correction" alt="Paint correction" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Paint Correction</p>
+                                <p class="text-xs text-gray-200">Swirl mark removal + ceramic coating</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-spray-can-sparkles mr-2 text-gray-400"></i>Showroom Finish</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 7 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.3s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Luxury+Vehicle+Restoration" alt="Luxury car restoration" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Premium Refinishing</p>
+                                <p class="text-xs text-gray-200">Luxury vehicle restoration</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-gem mr-2 text-gray-400"></i>Premium Finish</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 8 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.35s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Dent+Removal+Specialist" alt="Dent removal" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Paintless Dent Removal</p>
+                                <p class="text-xs text-gray-200">Hail damage repair</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-hand-sparkles mr-2 text-gray-400"></i>Invisible Dent Repair</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 9 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.4s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Custom+Matte+Finish" alt="Matte finish" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Custom Matte Finish</p>
+                                <p class="text-xs text-gray-200">Satin black transformation</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-fill-drip mr-2 text-gray-400"></i>Custom Finish Specialist</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 10 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.45s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Classic+Car+Restoration" alt="Classic car" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Vintage Restoration</p>
+                                <p class="text-xs text-gray-200">Classic car revival</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-car mr-2 text-gray-400"></i>Classic Car Expert</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 11 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.5s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Fender+Bender+Repair" alt="Fender repair" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Fender & Bumper Repair</p>
+                                <p class="text-xs text-gray-200">Seamless blending</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-car-bump mr-2 text-gray-400"></i>Bumper Restoration</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 12 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.55s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Ceramic+Coating+Protection" alt="Ceramic coating" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Ceramic Coating Application</p>
+                                <p class="text-xs text-gray-200">9H protection + gloss</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-shield-alt mr-2 text-gray-400"></i>Ultimate Paint Protection</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 13 -->
+                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.6s;">
+                    <div class="relative aspect-[4/3] overflow-hidden">
+                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Full+Vehicle+Respray" alt="Full respray" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <div class="text-white">
+                                <p class="font-bold text-sm">Complete Color Change</p>
+                                <p class="text-xs text-gray-200">Full vehicle respray</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-white/10">
+                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-paint-roller mr-2 text-gray-400"></i>Total Transformation</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Note about placeholders -->
+            <div class="mt-12 text-center bg-white/5 rounded-xl border border-white/10 p-5 max-w-2xl mx-auto">
+                <i class="fas fa-info-circle text-gray-400 mr-2"></i>
+                <span class="text-gray-400 text-sm">These are placeholder images. Replace each <code class="bg-black/50 px-2 py-1 rounded text-xs">src="https://placehold.co/..."</code> with your actual before/after photos.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CALL TO ACTION ========== -->
+    <section class="py-16 bg-black relative">
+        <div class="absolute inset-0 car-light-sweep opacity-20"></div>
+        <div class="relative max-w-4xl mx-auto px-5 text-center">
+            <i class="fas fa-camera-retro text-4xl text-gray-300 mb-4 blinking-led"></i>
+            <h2 class="text-3xl md:text-4xl font-bold text-white">Ready to Transform Your Vehicle?</h2>
+            <p class="text-gray-300 text-lg mt-3">Join our gallery of satisfied customers. Contact Mma Dipente for a free estimate.</p>
+            <div class="flex flex-wrap justify-center gap-5 mt-8">
+                <a href="#" class="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition"><i class="fas fa-phone-alt"></i> +27 (0) 82 123 4567</a>
+                <a href="#" class="inline-flex items-center gap-2 border border-white/40 px-8 py-3 rounded-full hover:bg-white/10 transition"><i class="fas fa-envelope"></i> info@3kautobody.co.za</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-black border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-2"><i class="fas fa-car-side text-2xl text-gray-400"></i><span class="text-xl font-bold text-white">3K Auto Body</span></div>
+                <p class="text-gray-500 text-sm mt-3">Red Seal spray painting, panel beating & female-led empowerment. Where quality meets heart.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Quick Links</h4>
+                <ul class="space-y-2 text-sm text-gray-400"><li><a href="#" class="hover:text-white">Home</a></li><li><a href="#" class="hover:text-white">About Mma Dipente</a></li><li><a href="#" class="hover:text-white">Services</a></li><li><a href="#" class="hover:text-white">Gallery</a></li><li><a href="#" class="hover:text-white">Contact</a></li></ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Our Promise</h4>
+                <p class="text-gray-400 text-sm">Honest assessments, rural development initiatives, and world-class auto body repairs by a certified master craftswoman.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-white mb-3">Workshop Hours</h4>
+                <p class="text-gray-400 text-sm">Mon-Fri: 8:00 – 17:30<br>Sat: 8:00 – 13:00<br>Sun: Closed</p>
+                <p class="text-gray-500 text-xs mt-2"><i class="fas fa-whatsapp"></i> WhatsApp inquiries welcome</p>
+            </div>
+        </div>
+        <div class="text-center text-gray-600 text-xs mt-12 pt-6 border-t border-white/5">© 2025 3K Auto Body Repairs — "Mother of Paint" Craftsmanship. All rights reserved.</div>
+    </footer>
+
+    <script>
+        // mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if(menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Simple lightbox effect on image click (optional)
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach(item => {
+            const img = item.querySelector('img');
+            if(img) {
+                img.addEventListener('click', () => {
+                    // You can replace this with a proper lightbox library
+                    // For now, just open in new tab or you can implement modal
+                    window.open(img.src, '_blank');
+                });
+                img.style.cursor = 'pointer';
+            }
+        });
+    </script>
+</body>
+</html>
