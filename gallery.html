@@ -1,433 +1,897 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>3K Auto Body Repairs | Gallery - Mma Dipente's Masterpieces</title>
-    <!-- Tailwind CSS + Google Fonts + Font Awesome -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-        body {
-            background: #0a0a0a;
-            overflow-x: hidden;
-        }
-        /* car light sweep & blink animations */
-        @keyframes lightSweep {
-            0% { background-position: -200% center; opacity: 0.4; }
-            40% { opacity: 0.9; }
-            100% { background-position: 200% center; opacity: 0.3; }
-        }
-        @keyframes blinkFast {
-            0%, 100% { opacity: 0.2; text-shadow: 0 0 2px #fff; }
-            50% { opacity: 1; text-shadow: 0 0 12px #ffdd88, 0 0 6px #ffaa33; }
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .car-light-sweep {
-            background: linear-gradient(90deg, rgba(255,255,240,0.03) 0%, rgba(255,220,100,0.5) 25%, rgba(255,255,210,0.85) 50%, rgba(255,220,100,0.5) 75%, rgba(255,255,240,0.03) 100%);
-            background-size: 200% auto;
-            animation: lightSweep 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-        .blinking-led {
-            animation: blinkFast 1.2s ease-in-out infinite;
-        }
-        .gallery-item {
-            animation: fadeInUp 0.6s ease-out forwards;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-        .gallery-item:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.2);
-        }
-        .image-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
-            transition: opacity 0.3s ease;
-        }
-        .gallery-item:hover .image-overlay {
-            opacity: 0.7;
-        }
-        /* Masonry grid style */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-        @media (min-width: 1024px) {
-            .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Gallery — 3K Auto Body Repairs · Mma Dipente's Masterpieces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #050508;
+      --deep: #0d0d14;
+      --panel: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --border-bright: rgba(255,255,255,0.18);
+      --silver: #a8b0bf;
+      --silver-light: #d0d8e8;
+      --white: #f0f2f7;
+      --accent: #c8d4e8;
+      --gold: #e8c97a;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--font-body); overflow-x: hidden; cursor: none; }
+
+    /* ---- Cursor ---- */
+    #cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--white); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s, background 0.2s, width 0.3s, height 0.3s; }
+    #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width 0.3s, height 0.3s, border-color 0.3s; }
+
+    /* ---- Noise ---- */
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9997; opacity: 0.6; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
+
+    /* ==================== NAV ==================== */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 900; padding: 0 clamp(1.5rem,5vw,4rem); height: 72px; display: flex; align-items: center; justify-content: space-between; background: rgba(5,5,8,0.7); backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid var(--border); transition: background 0.4s; }
+    nav.scrolled { background: rgba(5,5,8,0.95); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg,#1a1a28,#2a2a40); border: 1px solid var(--border-bright); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--silver-light); position: relative; overflow: hidden; }
+    .nav-logo-icon::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.1)); }
+    .nav-logo-text { font-family: var(--font-display); font-size: 22px; letter-spacing: 2px; color: var(--white); }
+    .nav-logo-sub { font-family: var(--font-mono); font-size: 9px; color: var(--silver); letter-spacing: 3px; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+    .nav-links a { font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px; color: var(--silver); text-decoration: none; text-transform: uppercase; position: relative; padding-bottom: 4px; transition: color 0.3s; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--white); transition: width 0.3s ease; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-cta { padding: 10px 24px; border-radius: 50px; background: var(--white); color: var(--black); font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; font-weight: 700; transition: background 0.3s, transform 0.2s, box-shadow 0.3s; }
+    .nav-cta:hover { background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,212,232,0.3); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: none; padding: 8px; }
+    .hamburger span { width: 24px; height: 1.5px; background: var(--white); display: block; transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px,4.5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px,-4.5px); }
+    .mobile-nav { position: fixed; top: 72px; left: 0; right: 0; bottom: 0; background: rgba(5,5,8,0.98); backdrop-filter: blur(40px); z-index: 800; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+    .mobile-nav.open { opacity: 1; pointer-events: all; }
+    .mobile-nav a { font-family: var(--font-display); font-size: 48px; letter-spacing: 4px; color: var(--white); text-decoration: none; transition: color 0.3s; text-transform: uppercase; }
+    .mobile-nav a:hover { color: var(--silver); }
+
+    /* ==================== HERO ==================== */
+    .hero {
+      min-height: 78vh; position: relative; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding-top: 72px;
+    }
+    .hero-reel {
+      position: absolute; inset: 0;
+      display: grid; grid-template-columns: repeat(4,1fr);
+    }
+    .hero-reel-col {
+      position: relative; overflow: hidden;
+    }
+    .hero-reel-col img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4) saturate(0.5); }
+    /* Slide up animation per column — staggered */
+    .hero-reel-col:nth-child(1) img { animation: reelSlide1 18s ease-in-out infinite; }
+    .hero-reel-col:nth-child(2) img { animation: reelSlide2 18s ease-in-out 4.5s infinite; }
+    .hero-reel-col:nth-child(3) img { animation: reelSlide3 18s ease-in-out 9s infinite; }
+    .hero-reel-col:nth-child(4) img { animation: reelSlide4 18s ease-in-out 13.5s infinite; }
+    @keyframes reelSlide1 { 0%,100% { transform: scale(1.0); filter: brightness(0.4) saturate(0.5); } 25% { transform: scale(1.06); filter: brightness(0.65) saturate(1); } 50%,99% { transform: scale(1.0); filter: brightness(0.4) saturate(0.5); } }
+    @keyframes reelSlide2 { 0%,100% { transform: scale(1.0); filter: brightness(0.4) saturate(0.5); } 25% { transform: scale(1.06); filter: brightness(0.65) saturate(1); } 50%,99% { transform: scale(1.0); filter: brightness(0.4) saturate(0.5); } }
+    @keyframes reelSlide3 { 0%,100% { transform: scale(1.0); filter: brightness(0.4) saturate(0.5); } 25% { transform: scale(1.06); filter: brightness(0.65) saturate(1); } 50%,99% { transform: scale(1.0); filter: brightness(0.4) saturate(0.5); } }
+    @keyframes reelSlide4 { 0%,100% { transform: scale(1.0); filter: brightness(0.4) saturate(0.5); } 25% { transform: scale(1.06); filter: brightness(0.65) saturate(1); } 50%,99% { transform: scale(1.0); filter: brightness(0.4) saturate(0.5); } }
+
+    /* Dividers between columns */
+    .hero-reel-col:not(:last-child)::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.06); z-index: 2; }
+
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,5,8,0.3) 0%, rgba(5,5,8,0.05) 40%, rgba(5,5,8,0.5) 80%, rgba(5,5,8,1) 100%); }
+    .hero-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 35%, rgba(5,5,8,0.8) 100%); }
+
+    .hero-content { position: relative; z-index: 10; max-width: 880px; padding: 0 clamp(1.5rem,5vw,4rem); animation: heroReveal 1.4s cubic-bezier(0.4,0,0.2,1) both; }
+    @keyframes heroReveal { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 50px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-bright); backdrop-filter: blur(12px); font-family: var(--font-mono); font-size: 10px; letter-spacing: 3px; color: var(--silver-light); text-transform: uppercase; margin-bottom: 28px; animation: heroReveal 1.4s 0.2s both; }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: badgePulse 2s ease-in-out infinite; }
+    @keyframes badgePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(232,201,122,0.4); } 50% { box-shadow: 0 0 0 6px rgba(232,201,122,0); } }
+
+    .hero-title { font-family: var(--font-display); font-size: clamp(64px,12vw,144px); line-height: 0.88; letter-spacing: 4px; color: var(--white); animation: heroReveal 1.4s 0.3s both; }
+    .hero-title .line-silver { display: block; background: linear-gradient(135deg,var(--silver) 0%,var(--white) 40%,var(--silver-light) 70%,var(--silver) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-title .line-outline { display: block; -webkit-text-stroke: 1px rgba(255,255,255,0.28); color: transparent; }
+
+    .hero-sub { font-size: clamp(14px,2vw,17px); color: rgba(200,210,225,0.8); max-width: 580px; margin: 24px auto 0; font-weight: 300; line-height: 1.9; animation: heroReveal 1.4s 0.5s both; }
+
+    /* Project count bar */
+    .hero-count-bar { display: flex; gap: 0; justify-content: center; margin-top: 36px; animation: heroReveal 1.4s 0.7s both; }
+    .hero-count-item { padding: 14px 28px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--silver); display: flex; align-items: center; gap: 8px; border-right: none; }
+    .hero-count-item:first-child { border-radius: 4px 0 0 4px; }
+    .hero-count-item:last-child { border-right: 1px solid var(--border); border-radius: 0 4px 4px 0; }
+    .hero-count-item strong { color: var(--white); font-family: var(--font-display); font-size: 20px; letter-spacing: 2px; }
+
+    .hero-scroll-hint { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 8px; animation: heroReveal 1.4s 1s both; }
+    .scroll-line { width: 1px; height: 48px; background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+    .scroll-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; color: var(--silver); text-transform: uppercase; writing-mode: vertical-rl; }
+
+    /* ==================== MARQUEE ==================== */
+    .marquee-section { overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 0; background: rgba(255,255,255,0.01); }
+    .marquee-track { display: flex; gap: 60px; white-space: nowrap; animation: marqueeScroll 22s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .marquee-item { font-family: var(--font-display); font-size: 18px; letter-spacing: 6px; text-transform: uppercase; color: rgba(255,255,255,0.15); flex-shrink: 0; }
+    .marquee-item .sep { color: var(--gold); margin: 0 20px; }
+
+    /* ==================== FILTER BAR ==================== */
+    .filter-section { padding: clamp(40px,6vh,80px) clamp(1.5rem,5vw,4rem) 0; background: var(--black); }
+    .filter-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
+    .filter-title-block .section-label { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--silver); margin-bottom: 12px; }
+    .filter-title-block .section-label::before { content: '//'; color: var(--gold); }
+    .filter-title-block h2 { font-family: var(--font-display); font-size: clamp(40px,6vw,80px); letter-spacing: 3px; line-height: 0.9; color: var(--white); }
+    .filter-title-block h2 em { font-style: normal; -webkit-text-stroke: 1px rgba(255,255,255,0.28); color: transparent; }
+    .filter-tabs { display: flex; gap: 3px; flex-wrap: wrap; }
+    .filter-tab {
+      padding: 10px 20px; border-radius: 4px;
+      background: var(--panel); border: 1px solid var(--border);
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--silver); cursor: none;
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+    .filter-tab:hover { background: rgba(255,255,255,0.07); border-color: var(--border-bright); color: var(--white); }
+    .filter-tab.active { background: var(--white); color: var(--black); border-color: var(--white); }
+
+    /* ==================== GALLERY GRID ==================== */
+    .gallery-section { padding: clamp(40px,6vh,80px) clamp(1.5rem,5vw,4rem) clamp(80px,12vh,160px); background: var(--black); }
+    .gallery-inner { max-width: 1200px; margin: 0 auto; }
+
+    /* Bento-style asymmetric grid */
+    .gallery-bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 3px;
+    }
+    /* Grid placement — items alternate sizes for visual rhythm */
+    .g-item { grid-column: span 4; }
+    .g-item.wide { grid-column: span 8; }
+    .g-item.tall { grid-column: span 4; grid-row: span 2; }
+    .g-item.full { grid-column: span 12; }
+    .g-item.half { grid-column: span 6; }
+
+    /* ---- Gallery card ---- */
+    .gallery-card {
+      position: relative; overflow: hidden; cursor: none;
+      background: #0e0e16;
+    }
+    .gallery-card img {
+      width: 100%; height: 100%; min-height: 240px; object-fit: cover;
+      filter: brightness(0.7) saturate(0.7);
+      transition: filter 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+      display: block;
+    }
+    .g-item.tall .gallery-card img { min-height: 500px; }
+    .g-item.wide .gallery-card img { min-height: 300px; }
+    .g-item.full .gallery-card img { min-height: 420px; }
+
+    /* Unique hover: clip-path reveal from bottom + colour burst */
+    .gallery-card::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(180deg, transparent 0%, rgba(5,5,8,0.95) 100%);
+      opacity: 0.6;
+      transition: opacity 0.4s;
+    }
+    .gallery-card:hover::before { opacity: 0.3; }
+    .gallery-card:hover img { filter: brightness(0.9) saturate(1.1); transform: scale(1.06); }
+
+    /* Corner bracket reveal on hover */
+    .gallery-card::after {
+      content: '';
+      position: absolute; top: 16px; right: 16px; z-index: 3;
+      width: 0; height: 0;
+      border-top: 2px solid var(--silver); border-right: 2px solid var(--silver);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+    .gallery-card:hover::after { width: 28px; height: 28px; }
+
+    /* Bottom-left corner */
+    .gallery-card .corner-bl {
+      position: absolute; bottom: 16px; left: 16px; z-index: 3;
+      width: 0; height: 0;
+      border-bottom: 2px solid var(--silver); border-left: 2px solid var(--silver);
+      transition: width 0.4s 0.1s ease, height 0.4s 0.1s ease;
+    }
+    .gallery-card:hover .corner-bl { width: 28px; height: 28px; }
+
+    /* Info panel — slides up from bottom */
+    .gallery-info {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 4;
+      padding: 20px 20px 20px;
+      background: linear-gradient(180deg, transparent 0%, rgba(5,5,8,0.96) 60%);
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+    }
+    .gallery-card:hover .gallery-info { transform: translateY(0); }
+    .gallery-info-cat { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; display: block; }
+    .gallery-info-title { font-family: var(--font-display); font-size: 22px; letter-spacing: 2px; color: var(--white); }
+    .gallery-info-sub { font-size: 12px; color: rgba(200,210,225,0.6); margin-top: 4px; font-weight: 300; }
+
+    /* Top-left service tag (always visible) */
+    .gallery-tag {
+      position: absolute; top: 16px; left: 16px; z-index: 5;
+      background: rgba(5,5,8,0.7); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 2px;
+      padding: 6px 12px;
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--silver-light);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .gallery-tag i { color: var(--gold); font-size: 9px; }
+
+    /* Lightbox zoom icon */
+    .gallery-zoom {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0);
+      z-index: 5; width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-bright);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: var(--white);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+      opacity: 0;
+    }
+    .gallery-card:hover .gallery-zoom { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+
+    /* ==================== LIGHTBOX ==================== */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 9990;
+      background: rgba(5,5,8,0.96); backdrop-filter: blur(24px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    #lightbox.open { opacity: 1; pointer-events: all; }
+    #lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border: 1px solid var(--border-bright); }
+    .lb-close {
+      position: absolute; top: 24px; right: 24px;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border-bright);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--white); cursor: none;
+      transition: background 0.3s;
+    }
+    .lb-close:hover { background: rgba(255,255,255,0.12); }
+    .lb-info { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); text-align: center; }
+    .lb-info-cat { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+    .lb-info-title { font-family: var(--font-display); font-size: 28px; letter-spacing: 3px; color: var(--white); margin-top: 4px; }
+    .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border-bright);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--white); cursor: none;
+      transition: background 0.3s;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,0.12); }
+    .lb-prev { left: 24px; }
+    .lb-next { right: 24px; }
+
+    /* ==================== CTA ==================== */
+    .cta-section { padding: clamp(80px,12vh,160px) clamp(1.5rem,5vw,4rem); background: var(--deep); position: relative; overflow: hidden; }
+    .cta-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=1400&q=80') center/cover; opacity: 0.07; }
+    .cta-inner { max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 2; }
+    .section-label { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--silver); margin-bottom: 20px; }
+    .section-label::before { content: '//'; color: var(--gold); }
+    h2.section-title { font-family: var(--font-display); font-size: clamp(44px,7vw,88px); line-height: 0.9; letter-spacing: 3px; color: var(--white); margin-bottom: 24px; }
+    h2.section-title em { font-style: normal; -webkit-text-stroke: 1px rgba(255,255,255,0.28); color: transparent; }
+    .cta-inner p { font-size: 16px; color: rgba(200,210,225,0.65); line-height: 1.9; font-weight: 300; margin-bottom: 48px; max-width: 560px; margin-left: auto; margin-right: auto; }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .cta-contact-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+    .contact-chip { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 4px; background: var(--panel); border: 1px solid var(--border); font-size: 14px; color: var(--silver-light); text-decoration: none; transition: background 0.3s, border-color 0.3s, transform 0.3s; }
+    .contact-chip:hover { background: rgba(255,255,255,0.07); border-color: var(--border-bright); transform: translateY(-2px); }
+    .contact-chip i { color: var(--gold); }
+    .respond-note { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.2); text-transform: uppercase; }
+    .respond-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: badgePulse 2s ease-in-out infinite; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; border-radius: 4px; background: var(--white); color: var(--black); font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; font-weight: 700; position: relative; overflow: hidden; transition: color 0.4s; }
+    .btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,var(--accent),var(--silver)); transform: translateX(-100%) skewX(-10deg); transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .btn-primary:hover::before { transform: translateX(0) skewX(-10deg); }
+    .btn-primary span, .btn-primary i { position: relative; z-index: 1; }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; border-radius: 4px; border: 1px solid var(--border-bright); color: var(--white); background: rgba(255,255,255,0.03); font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: background 0.3s, border-color 0.3s, transform 0.2s; }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: var(--silver); transform: translateY(-2px); }
+
+    /* ==================== FOOTER ==================== */
+    footer { background: var(--deep); border-top: 1px solid var(--border); padding: 80px clamp(1.5rem,5vw,4rem) 32px; }
+    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+    .footer-brand p { color: rgba(180,190,210,0.5); font-size: 13px; line-height: 1.8; margin-top: 16px; max-width: 280px; font-weight: 300; }
+    .footer-social { display: flex; gap: 12px; margin-top: 24px; }
+    .social-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--panel); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--silver); text-decoration: none; transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s; }
+    .social-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--border-bright); color: var(--white); transform: translateY(-3px); }
+    .footer-col h4 { font-family: var(--font-mono); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--silver); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col a { color: rgba(180,190,210,0.6); font-size: 14px; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 8px; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-col a::before { content: ''; width: 0; height: 1px; background: var(--silver); transition: width 0.3s; }
+    .footer-col a:hover::before { width: 12px; }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+    .footer-bottom p { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.2); }
+
+    /* ==================== REVEAL ==================== */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 1024px) {
+      .gallery-bento { grid-template-columns: repeat(6,1fr); }
+      .g-item { grid-column: span 3; }
+      .g-item.wide { grid-column: span 6; }
+      .g-item.tall { grid-column: span 3; }
+      .g-item.full { grid-column: span 6; }
+      .g-item.half { grid-column: span 3; }
+      .hero-reel { grid-template-columns: repeat(2,1fr); }
+      .hero-reel-col:nth-child(3), .hero-reel-col:nth-child(4) { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .gallery-bento { grid-template-columns: repeat(2,1fr); }
+      .g-item, .g-item.wide, .g-item.tall, .g-item.full, .g-item.half { grid-column: span 2; grid-row: span 1; }
+      .g-item.tall .gallery-card img { min-height: 280px; }
+      .hero-count-bar { flex-direction: column; }
+      .hero-count-item { border: 1px solid var(--border); border-radius: 4px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .cta-actions { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+      .cta-contact-row { flex-direction: column; align-items: center; }
+      .contact-chip { width: 100%; justify-content: center; }
+      .filter-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .gallery-bento { grid-template-columns: 1fr; }
+      .g-item, .g-item.wide, .g-item.tall, .g-item.full, .g-item.half { grid-column: span 1; }
+      .hero-reel { display: none; }
+      .hero { background: url('https://images.unsplash.com/photo-1620474669014-04b7327c1c4a?w=800&q=80') center/cover; }
+      .hero-title { letter-spacing: 2px; }
+    }
+    @media (hover: none) {
+      body { cursor: auto; }
+      #cursor-dot, #cursor-ring { display: none; }
+      a, button { cursor: pointer; }
+    }
+  </style>
 </head>
-<body class="bg-black text-gray-200">
+<body>
 
-    <!-- ========== NAVIGATION ========== -->
-    <nav class="bg-black/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-4 flex flex-wrap justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-car-side text-3xl text-gray-300 blinking-led"></i>
-                <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent">3K AUTO</span>
-                <span class="text-xs font-light border-l border-white/30 pl-2 ml-1 hidden sm:inline">BODY REPAIRS</span>
-            </div>
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="#" class="hover:text-white text-gray-300 transition">HOME</a>
-                <a href="#" class="hover:text-white text-gray-300 transition">ABOUT</a>
-                <a href="#" class="hover:text-white text-gray-300 transition">SERVICES</a>
-                <a href="#" class="hover:text-white text-gray-300 transition">GALLERY</a>
-                <a href="#" class="hover:text-white text-white border-b-2 border-white/60 pb-1">CONTACT</a>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="#" class="hidden sm:inline-block px-5 py-2 text-sm font-semibold rounded-full bg-white text-black hover:bg-gray-200 transition shadow-lg">GET QUOTE</a>
-                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl focus:outline-none"><i class="fas fa-bars"></i></button>
-            </div>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- ==================== LIGHTBOX ==================== -->
+<div id="lightbox">
+  <div class="lb-close" id="lbClose"><i class="fas fa-times"></i></div>
+  <div class="lb-nav lb-prev" id="lbPrev"><i class="fas fa-chevron-left"></i></div>
+  <div class="lb-nav lb-next" id="lbNext"><i class="fas fa-chevron-right"></i></div>
+  <img id="lbImg" src="" alt="" />
+  <div class="lb-info">
+    <div class="lb-info-cat" id="lbCat"></div>
+    <div class="lb-info-title" id="lbTitle"></div>
+  </div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon"><i class="fas fa-spray-can"></i></div>
+    <div>
+      <span class="nav-logo-text">3K AUTO</span>
+      <span class="nav-logo-sub">BODY REPAIRS</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="gallery.html" class="active">Gallery</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="contact.html" class="nav-cta">Get Quote</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html" class="mobile-link">Home</a>
+  <a href="about.html" class="mobile-link">About</a>
+  <a href="services.html" class="mobile-link">Services</a>
+  <a href="gallery.html" class="mobile-link">Gallery</a>
+  <a href="contact.html" class="mobile-link">Contact</a>
+  <a href="contact.html" style="color:var(--gold);" class="mobile-link">Get Quote →</a>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <!-- Film-reel 4-column animated background -->
+  <div class="hero-reel">
+    <div class="hero-reel-col">
+      <img src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=600&q=80" alt="" loading="eager"/>
+    </div>
+    <div class="hero-reel-col">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="" loading="eager"/>
+    </div>
+    <div class="hero-reel-col">
+      <img src="https://images.unsplash.com/photo-1639747280929-e84ef392c69a?w=600&q=80" alt="" loading="eager"/>
+    </div>
+    <div class="hero-reel-col">
+      <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=600&q=80" alt="" loading="eager"/>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Mma Dipente's Portfolio · Red Seal Quality
+    </div>
+    <h1 class="hero-title">
+      <span class="line-outline">OUR</span>
+      <span>MASTER</span>
+      <span class="line-silver">PIECES</span>
+    </h1>
+    <p class="hero-sub">
+      Witness the transformation — from dents and scratches to flawless finishes. Each vehicle restored with Red Seal precision and an artist's eye.
+    </p>
+    <div class="hero-count-bar">
+      <div class="hero-count-item"><strong>100+</strong> Projects</div>
+      <div class="hero-count-item"><strong>6</strong> Service Types</div>
+      <div class="hero-count-item"><strong>⭐ 5.0</strong> Rated</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span class="scroll-label">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ==================== MARQUEE ==================== -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">BEFORE & AFTER <span class="sep">✦</span></span>
+    <span class="marquee-item">SPRAY PAINTING <span class="sep">✦</span></span>
+    <span class="marquee-item">PANEL BEATING <span class="sep">✦</span></span>
+    <span class="marquee-item">COLLISION REPAIR <span class="sep">✦</span></span>
+    <span class="marquee-item">COLOUR MATCHING <span class="sep">✦</span></span>
+    <span class="marquee-item">CUSTOM AIRBRUSHING <span class="sep">✦</span></span>
+    <span class="marquee-item">DETAILING <span class="sep">✦</span></span>
+    <span class="marquee-item">BEFORE & AFTER <span class="sep">✦</span></span>
+    <span class="marquee-item">SPRAY PAINTING <span class="sep">✦</span></span>
+    <span class="marquee-item">PANEL BEATING <span class="sep">✦</span></span>
+    <span class="marquee-item">COLLISION REPAIR <span class="sep">✦</span></span>
+    <span class="marquee-item">COLOUR MATCHING <span class="sep">✦</span></span>
+    <span class="marquee-item">CUSTOM AIRBRUSHING <span class="sep">✦</span></span>
+    <span class="marquee-item">DETAILING <span class="sep">✦</span></span>
+  </div>
+</div>
+
+<!-- ==================== FILTER + TITLE ==================== -->
+<div class="filter-section">
+  <div class="filter-inner">
+    <div class="filter-title-block reveal">
+      <div class="section-label">Portfolio</div>
+      <h2>Flawless <em>Transformations</em></h2>
+    </div>
+    <div class="filter-tabs reveal reveal-delay-1" id="filterTabs">
+      <button class="filter-tab active" data-filter="all">All Work</button>
+      <button class="filter-tab" data-filter="spray">Spray Paint</button>
+      <button class="filter-tab" data-filter="panel">Panel Beating</button>
+      <button class="filter-tab" data-filter="collision">Collision</button>
+      <button class="filter-tab" data-filter="custom">Custom</button>
+      <button class="filter-tab" data-filter="detail">Detailing</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== GALLERY BENTO ==================== -->
+<section class="gallery-section">
+  <div class="gallery-inner">
+    <div class="gallery-bento" id="galleryGrid">
+
+      <!-- 01 — wide featured -->
+      <div class="g-item wide" data-cat="spray">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=1200&q=90" data-lb-cat="Spray Painting" data-lb-title="Full Metallic Respray">
+          <img src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=900&q=80" alt="Full Respray" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-fill-drip"></i>Spray Painting</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Spray Painting</span>
+            <div class="gallery-info-title">Full Metallic Respray</div>
+            <div class="gallery-info-sub">Factory colour match · Multi-layer refinishing</div>
+          </div>
         </div>
-        <div id="mobile-menu" class="md:hidden hidden flex-col bg-black/95 border-t border-white/10 px-6 pb-5 space-y-3 text-base font-medium">
-            <a href="#" class="block py-2 text-gray-200 hover:text-white">HOME</a>
-            <a href="#" class="block py-2 text-gray-200 hover:text-white">ABOUT</a>
-            <a href="#" class="block py-2 text-gray-200 hover:text-white">SERVICES</a>
-            <a href="#" class="block py-2 text-gray-200 hover:text-white">GALLERY</a>
-            <a href="#" class="block py-2 text-white">CONTACT</a>
-            <a href="#" class="block py-2 text-center bg-white text-black rounded-full mt-2">GET QUOTE</a>
+      </div>
+
+      <!-- 02 — tall -->
+      <div class="g-item tall" data-cat="panel">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=90" data-lb-cat="Panel Beating" data-lb-title="Major Dent Restoration">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Panel Beating" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-hammer"></i>Panel Beating</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Panel Beating</span>
+            <div class="gallery-info-title">Major Dent Restoration</div>
+            <div class="gallery-info-sub">Structural repair · Invisible result</div>
+          </div>
         </div>
-    </nav>
+      </div>
 
-    <!-- ========== HERO SECTION with car light animation ========== -->
-    <section class="relative overflow-hidden bg-black">
-        <div class="absolute inset-0 car-light-sweep opacity-40 pointer-events-none"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black"></div>
-        <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-20 md:py-28 z-10">
-            <div class="text-center max-w-4xl mx-auto">
-                <div class="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/20 mb-5">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
-                    </span>
-                    <span class="text-xs uppercase tracking-wider text-gray-300">Mma Dipente's Portfolio</span>
-                </div>
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">
-                    <span class="text-white">Our Masterpieces</span><br>
-                    <span class="bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">Before & After</span>
-                </h1>
-                <p class="text-gray-300 text-xl mt-6 max-w-2xl mx-auto leading-relaxed">
-                    Witness the transformation — from dents and scratches to flawless finishes. Each vehicle restored with Red Seal precision by the Mother of Paint.
-                </p>
-            </div>
+      <!-- 03 — standard -->
+      <div class="g-item" data-cat="collision">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1639747280929-e84ef392c69a?w=900&q=90" data-lb-cat="Collision Repair" data-lb-title="Front-End Collision Recovery">
+          <img src="https://images.unsplash.com/photo-1639747280929-e84ef392c69a?w=600&q=80" alt="Collision Repair" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-car-burst"></i>Collision</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Collision Repair</span>
+            <div class="gallery-info-title">Front-End Recovery</div>
+            <div class="gallery-info-sub">Frame straightening · OEM parts</div>
+          </div>
         </div>
-        <div class="flex justify-center gap-3 pb-5">
-            <div class="w-10 h-1.5 bg-white/40 rounded-full blinking-led"></div>
-            <div class="w-10 h-1.5 bg-gray-500/60 rounded-full"></div>
-            <div class="w-10 h-1.5 bg-white/40 rounded-full blinking-led"></div>
+      </div>
+
+      <!-- 04 — standard -->
+      <div class="g-item" data-cat="detail">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=900&q=90" data-lb-cat="Detailing" data-lb-title="Ceramic Coating & Paint Correction">
+          <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=600&q=80" alt="Detailing" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-sparkles"></i>Detailing</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Detailing</span>
+            <div class="gallery-info-title">Ceramic Coating</div>
+            <div class="gallery-info-sub">9H protection · Showroom gloss</div>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- ========== GALLERY GRID - 13 PLACEHOLDERS ========== -->
-    <section class="py-20 bg-gradient-to-b from-black to-neutral-950">
-        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-            <div class="text-center mb-14">
-                <span class="text-gray-400 uppercase tracking-wider text-sm bg-white/5 px-4 py-1.5 rounded-full border border-white/10"><i class="fas fa-images mr-2"></i> Recent Projects</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-5 text-white">Flawless <span class="text-gray-300">Transformations</span></h2>
-                <div class="h-1 w-24 bg-gradient-to-r from-gray-400 to-white mx-auto mt-5 rounded-full"></div>
-                <p class="text-gray-400 max-w-2xl mx-auto mt-5">Browse through our recent work — spray painting, panel beating, collision repairs, and custom finishes.</p>
-            </div>
-
-            <div class="gallery-grid">
-                <!-- Gallery Item 1 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Before+%26+After+Spray+Painting" alt="Spray painting transformation" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Full Respray - Metallic Black</p>
-                                <p class="text-xs text-gray-200">Complete color transformation</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-spray-can-sparkles mr-2 text-gray-400"></i>Flawless Finish | Red Seal Quality</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 2 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.05s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Panel+Beating+Restoration" alt="Panel beating before after" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Major Dent Repair</p>
-                                <p class="text-xs text-gray-200">Structural restoration</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-hammer mr-2 text-gray-400"></i>Precision Panel Beating</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 3 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.1s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Collision+Repair+Before+After" alt="Collision repair" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Full Collision Repair</p>
-                                <p class="text-xs text-gray-200">Frame straightening + respray</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-car-crash mr-2 text-gray-400"></i>Accident Damage Restored</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 4 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.15s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Custom+Airbrushing+Artwork" alt="Custom airbrushing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Custom Airbrushing</p>
-                                <p class="text-xs text-gray-200">Unique graphic design</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-brush mr-2 text-gray-400"></i>Mma Dipente's Signature Art</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 5 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.2s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Color+Matching+Perfection" alt="Color matching" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Invisible Repair</p>
-                                <p class="text-xs text-gray-200">Advanced color matching</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-eye-dropper mr-2 text-gray-400"></i>Perfect Color Match</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 6 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.25s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Detailing+%26+Paint+Correction" alt="Paint correction" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Paint Correction</p>
-                                <p class="text-xs text-gray-200">Swirl mark removal + ceramic coating</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-spray-can-sparkles mr-2 text-gray-400"></i>Showroom Finish</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 7 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.3s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Luxury+Vehicle+Restoration" alt="Luxury car restoration" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Premium Refinishing</p>
-                                <p class="text-xs text-gray-200">Luxury vehicle restoration</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-gem mr-2 text-gray-400"></i>Premium Finish</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 8 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.35s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Dent+Removal+Specialist" alt="Dent removal" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Paintless Dent Removal</p>
-                                <p class="text-xs text-gray-200">Hail damage repair</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-hand-sparkles mr-2 text-gray-400"></i>Invisible Dent Repair</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 9 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.4s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Custom+Matte+Finish" alt="Matte finish" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Custom Matte Finish</p>
-                                <p class="text-xs text-gray-200">Satin black transformation</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-fill-drip mr-2 text-gray-400"></i>Custom Finish Specialist</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 10 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.45s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Classic+Car+Restoration" alt="Classic car" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Vintage Restoration</p>
-                                <p class="text-xs text-gray-200">Classic car revival</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-car mr-2 text-gray-400"></i>Classic Car Expert</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 11 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.5s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Fender+Bender+Repair" alt="Fender repair" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Fender & Bumper Repair</p>
-                                <p class="text-xs text-gray-200">Seamless blending</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-car-bump mr-2 text-gray-400"></i>Bumper Restoration</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 12 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.55s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Ceramic+Coating+Protection" alt="Ceramic coating" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Ceramic Coating Application</p>
-                                <p class="text-xs text-gray-200">9H protection + gloss</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-shield-alt mr-2 text-gray-400"></i>Ultimate Paint Protection</p>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 13 -->
-                <div class="gallery-item rounded-2xl overflow-hidden bg-white/5 border border-white/10 relative group" style="animation-delay: 0.6s;">
-                    <div class="relative aspect-[4/3] overflow-hidden">
-                        <img src="https://placehold.co/600x450/1a1a1a/cccccc?text=Full+Vehicle+Respray" alt="Full respray" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                            <div class="text-white">
-                                <p class="font-bold text-sm">Complete Color Change</p>
-                                <p class="text-xs text-gray-200">Full vehicle respray</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 border-t border-white/10">
-                        <p class="text-sm font-medium text-gray-300"><i class="fas fa-paint-roller mr-2 text-gray-400"></i>Total Transformation</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Note about placeholders -->
-            <div class="mt-12 text-center bg-white/5 rounded-xl border border-white/10 p-5 max-w-2xl mx-auto">
-                <i class="fas fa-info-circle text-gray-400 mr-2"></i>
-                <span class="text-gray-400 text-sm">These are placeholder images. Replace each <code class="bg-black/50 px-2 py-1 rounded text-xs">src="https://placehold.co/..."</code> with your actual before/after photos.</span>
-            </div>
+      <!-- 05 — standard -->
+      <div class="g-item" data-cat="custom">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1635784063388-1ff12e35b2b2?w=900&q=90" data-lb-cat="Custom Airbrushing" data-lb-title="Mma Dipente's Signature Art">
+          <img src="https://images.unsplash.com/photo-1635784063388-1ff12e35b2b2?w=600&q=80" alt="Custom Airbrushing" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-paintbrush"></i>Custom Art</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Custom Airbrushing</span>
+            <div class="gallery-info-title">Signature Artwork</div>
+            <div class="gallery-info-sub">Hand-painted · One of a kind</div>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- ========== CALL TO ACTION ========== -->
-    <section class="py-16 bg-black relative">
-        <div class="absolute inset-0 car-light-sweep opacity-20"></div>
-        <div class="relative max-w-4xl mx-auto px-5 text-center">
-            <i class="fas fa-camera-retro text-4xl text-gray-300 mb-4 blinking-led"></i>
-            <h2 class="text-3xl md:text-4xl font-bold text-white">Ready to Transform Your Vehicle?</h2>
-            <p class="text-gray-300 text-lg mt-3">Join our gallery of satisfied customers. Contact Mma Dipente for a free estimate.</p>
-            <div class="flex flex-wrap justify-center gap-5 mt-8">
-                <a href="#" class="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition"><i class="fas fa-phone-alt"></i> +27 (0) 82 123 4567</a>
-                <a href="#" class="inline-flex items-center gap-2 border border-white/40 px-8 py-3 rounded-full hover:bg-white/10 transition"><i class="fas fa-envelope"></i> info@3kautobody.co.za</a>
-            </div>
+      <!-- 06 — half -->
+      <div class="g-item half" data-cat="spray">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1620905757573-d91f02c5fa45?w=1200&q=90" data-lb-cat="Spray Painting" data-lb-title="Custom Matte Black Finish">
+          <img src="https://images.unsplash.com/photo-1620905757573-d91f02c5fa45?w=900&q=80" alt="Matte Finish" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-fill-drip"></i>Spray Painting</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Spray Painting</span>
+            <div class="gallery-info-title">Matte Black Transformation</div>
+            <div class="gallery-info-sub">Custom satin finish · Full vehicle</div>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- ========== FOOTER ========== -->
-    <footer class="bg-black border-t border-white/10 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-                <div class="flex items-center gap-2"><i class="fas fa-car-side text-2xl text-gray-400"></i><span class="text-xl font-bold text-white">3K Auto Body</span></div>
-                <p class="text-gray-500 text-sm mt-3">Red Seal spray painting, panel beating & female-led empowerment. Where quality meets heart.</p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-3">Quick Links</h4>
-                <ul class="space-y-2 text-sm text-gray-400"><li><a href="#" class="hover:text-white">Home</a></li><li><a href="#" class="hover:text-white">About Mma Dipente</a></li><li><a href="#" class="hover:text-white">Services</a></li><li><a href="#" class="hover:text-white">Gallery</a></li><li><a href="#" class="hover:text-white">Contact</a></li></ul>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-3">Our Promise</h4>
-                <p class="text-gray-400 text-sm">Honest assessments, rural development initiatives, and world-class auto body repairs by a certified master craftswoman.</p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-3">Workshop Hours</h4>
-                <p class="text-gray-400 text-sm">Mon-Fri: 8:00 – 17:30<br>Sat: 8:00 – 13:00<br>Sun: Closed</p>
-                <p class="text-gray-500 text-xs mt-2"><i class="fas fa-whatsapp"></i> WhatsApp inquiries welcome</p>
-            </div>
+      <!-- 07 — half -->
+      <div class="g-item half" data-cat="panel">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1200&q=90" data-lb-cat="Panel Beating" data-lb-title="Hail Damage Repair">
+          <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=900&q=80" alt="Hail Damage" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-hammer"></i>Panel Beating</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Panel Beating</span>
+            <div class="gallery-info-title">Hail Damage Repair</div>
+            <div class="gallery-info-sub">PDR technique · 200+ dents removed</div>
+          </div>
         </div>
-        <div class="text-center text-gray-600 text-xs mt-12 pt-6 border-t border-white/5">© 2025 3K Auto Body Repairs — "Mother of Paint" Craftsmanship. All rights reserved.</div>
-    </footer>
+      </div>
 
-    <script>
-        // mobile menu toggle
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if(menuBtn) {
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+      <!-- 08 — wide -->
+      <div class="g-item wide" data-cat="collision">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1400&q=90" data-lb-cat="Collision Repair" data-lb-title="Complete Rear-End Rebuild">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80" alt="Full Rebuild" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-car-burst"></i>Collision</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Collision Repair</span>
+            <div class="gallery-info-title">Complete Rear-End Rebuild</div>
+            <div class="gallery-info-sub">Total structural restoration · Seamless finish</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 09 — standard -->
+      <div class="g-item" data-cat="custom">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=900&q=90" data-lb-cat="Custom Airbrushing" data-lb-title="Ghost Flame Design">
+          <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&q=80" alt="Ghost Flames" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-paintbrush"></i>Custom Art</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Custom Airbrushing</span>
+            <div class="gallery-info-title">Ghost Flame Design</div>
+            <div class="gallery-info-sub">Freehand airbrushing · Unique to vehicle</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 — standard -->
+      <div class="g-item" data-cat="spray">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=900&q=90" data-lb-cat="Spray Painting" data-lb-title="Pearl White Full Respray">
+          <img src="https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=600&q=80" alt="Pearl White" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-fill-drip"></i>Spray Painting</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Spray Painting</span>
+            <div class="gallery-info-title">Pearl White Respray</div>
+            <div class="gallery-info-sub">OEM colour match · 3-stage application</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 — standard -->
+      <div class="g-item" data-cat="detail">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=900&q=90" data-lb-cat="Detailing" data-lb-title="Paint Correction & Polish">
+          <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=600&q=80" alt="Paint Correction" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-sparkles"></i>Detailing</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Detailing</span>
+            <div class="gallery-info-title">Paint Correction & Polish</div>
+            <div class="gallery-info-sub">Swirl removal · Machine compound</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12 — full width feature -->
+      <div class="g-item full" data-cat="collision">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1620474669014-04b7327c1c4a?w=1600&q=90" data-lb-cat="Collision Repair" data-lb-title="BMW 3 Series — Full Accident Recovery">
+          <img src="https://images.unsplash.com/photo-1620474669014-04b7327c1c4a?w=1400&q=80" alt="Full Recovery" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-car-burst"></i>Featured Work</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Full Collision Recovery — Featured</span>
+            <div class="gallery-info-title">BMW 3 Series — Complete Accident Recovery</div>
+            <div class="gallery-info-sub">Frame straightening · OEM respray · Ceramic coat · Delivered in 6 days</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13 — standard -->
+      <div class="g-item" data-cat="panel">
+        <div class="gallery-card" data-lb-src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=900&q=90" data-lb-cat="Panel Beating" data-lb-title="Fender & Bumper Repair">
+          <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80" alt="Fender Repair" loading="lazy"/>
+          <div class="gallery-tag"><i class="fas fa-hammer"></i>Panel Beating</div>
+          <div class="corner-bl"></div>
+          <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+          <div class="gallery-info">
+            <span class="gallery-info-cat">Panel Beating</span>
+            <div class="gallery-info-title">Fender & Bumper Repair</div>
+            <div class="gallery-info-sub">Seamless blending · No visible join</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /gallery-bento -->
+  </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta-section">
+  <div class="cta-bg"></div>
+  <div class="cta-inner">
+    <div class="section-label reveal" style="justify-content:center;">Ready?</div>
+    <h2 class="section-title reveal reveal-delay-1">Add Your Car<br>To Our <em>Gallery</em></h2>
+    <p class="reveal reveal-delay-2">Join our growing portfolio of satisfied clients. Contact Mma Dipente today for a free, no-obligation estimate and experience Red Seal craftsmanship.</p>
+    <div class="cta-actions reveal reveal-delay-2">
+      <a href="contact.html" class="btn-primary"><i class="fas fa-calendar-alt"></i><span>Book a Free Estimate</span></a>
+      <a href="services.html" class="btn-ghost"><i class="fas fa-tools"></i><span>View Services</span></a>
+    </div>
+    <div class="cta-contact-row reveal reveal-delay-2">
+      <a href="tel:+27821234567" class="contact-chip"><i class="fas fa-phone-alt"></i>+27 (0) 82 123 4567</a>
+      <a href="mailto:info@3kautobody.co.za" class="contact-chip"><i class="fas fa-envelope"></i>info@3kautobody.co.za</a>
+      <a href="https://wa.me/27821234567" class="contact-chip"><i class="fab fa-whatsapp"></i>WhatsApp</a>
+    </div>
+    <div class="reveal reveal-delay-2" style="display:flex;justify-content:center;">
+      <div class="respond-note"><div class="respond-dot"></div>Response within 24h · Gauteng region</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon"><i class="fas fa-spray-can"></i></div>
+        <div>
+          <span class="nav-logo-text">3K AUTO</span>
+          <span class="nav-logo-sub">BODY REPAIRS</span>
+        </div>
+      </a>
+      <p>Red Seal spray painting, panel beating & female-led empowerment. Where quality meets heart, in every coat.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Mma Dipente</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Spray Painting</a></li>
+        <li><a href="services.html">Panel Beating</a></li>
+        <li><a href="services.html">Collision Repair</a></li>
+        <li><a href="services.html">Colour Matching</a></li>
+        <li><a href="services.html">Airbrushing</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Workshop</h4>
+      <ul>
+        <li><a href="#">Mon – Fri · 08:00 – 17:30</a></li>
+        <li><a href="#">Saturday · 08:00 – 13:00</a></li>
+        <li><a href="#">Sunday · Closed</a></li>
+        <li><a href="tel:+27821234567">+27 (0) 82 123 4567</a></li>
+        <li><a href="mailto:info@3kautobody.co.za">info@3kautobody.co.za</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 3K AUTO BODY REPAIRS — "MMA DIPENTE" CRAFTSMANSHIP</p>
+    <p>MIDRAND / PRETORIA · BY APPOINTMENT</p>
+  </div>
+</footer>
+
+<!-- ==================== JS ==================== -->
+<script>
+  /* ---- Cursor ---- */
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function animateCursor() {
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  })();
+  document.querySelectorAll('a, button, .gallery-card, .filter-tab').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '56px'; ring.style.height = '56px';
+      ring.style.borderColor = 'rgba(232,201,122,0.6)';
+      dot.style.transform = 'translate(-50%,-50%) scale(0.4)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px'; ring.style.height = '36px';
+      ring.style.borderColor = 'rgba(255,255,255,0.4)';
+      dot.style.transform = 'translate(-50%,-50%) scale(1)';
+    });
+  });
+
+  /* ---- Navbar scroll ---- */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  /* ---- Mobile menu ---- */
+  const ham = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => {
+    ham.classList.remove('open'); mobileNav.classList.remove('open'); document.body.style.overflow = '';
+  }));
+
+  /* ---- Filter tabs ---- */
+  const tabs = document.querySelectorAll('.filter-tab');
+  const items = document.querySelectorAll('.gallery-bento .g-item');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const f = tab.dataset.filter;
+      items.forEach(item => {
+        const match = f === 'all' || item.dataset.cat === f;
+        item.style.opacity = '0';
+        item.style.transform = 'scale(0.96)';
+        item.style.transition = 'opacity 0.3s, transform 0.3s';
+        setTimeout(() => {
+          item.style.display = match ? '' : 'none';
+          if (match) {
+            requestAnimationFrame(() => {
+              item.style.opacity = '1';
+              item.style.transform = 'scale(1)';
             });
-        }
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-        
-        // Simple lightbox effect on image click (optional)
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        galleryItems.forEach(item => {
-            const img = item.querySelector('img');
-            if(img) {
-                img.addEventListener('click', () => {
-                    // You can replace this with a proper lightbox library
-                    // For now, just open in new tab or you can implement modal
-                    window.open(img.src, '_blank');
-                });
-                img.style.cursor = 'pointer';
-            }
-        });
-    </script>
+          }
+        }, 220);
+      });
+    });
+  });
+
+  /* ---- Lightbox ---- */
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCat = document.getElementById('lbCat');
+  const lbTitle = document.getElementById('lbTitle');
+  const cards = document.querySelectorAll('.gallery-card');
+  let lbIndex = 0;
+  const lbData = [];
+  cards.forEach((card, i) => {
+    const src = card.dataset.lbSrc;
+    const cat = card.dataset.lbCat;
+    const title = card.dataset.lbTitle;
+    lbData.push({ src, cat, title });
+    card.addEventListener('click', () => openLb(i));
+  });
+  function openLb(i) {
+    lbIndex = i;
+    lbImg.src = lbData[i].src;
+    lbCat.textContent = lbData[i].cat;
+    lbTitle.textContent = lbData[i].title;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.getElementById('lbPrev').addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex - 1 + lbData.length) % lbData.length; openLb(lbIndex); });
+  document.getElementById('lbNext').addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex + 1) % lbData.length; openLb(lbIndex); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbData.length) % lbData.length; openLb(lbIndex); }
+    if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbData.length; openLb(lbIndex); }
+  });
+
+  /* ---- Scroll reveal ---- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>

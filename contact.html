@@ -3,411 +3,831 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>3K Auto Body Repairs | Contact Mma Dipente - Mother of Paint</title>
-    <!-- Tailwind CSS + Google Fonts + Font Awesome -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <title>3K Auto Body Repairs | Contact Mma Dipente — Mother of Paint</title>
+    <!-- Google Fonts: same as homepage (Bebas Neue, DM Sans, Space Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
-            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        :root {
+            --black: #050508;
+            --deep: #0d0d14;
+            --panel: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(255, 255, 255, 0.18);
+            --silver: #a8b0bf;
+            --silver-light: #d0d8e8;
+            --white: #f0f2f7;
+            --accent: #c8d4e8;
+            --gold: #e8c97a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
         body {
-            background: #0a0a0a;
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
             overflow-x: hidden;
+            cursor: none;
         }
-        /* car light sweep & blink animations */
-        @keyframes lightSweep {
-            0% { background-position: -200% center; opacity: 0.4; }
-            40% { opacity: 0.9; }
-            100% { background-position: 200% center; opacity: 0.3; }
+
+        /* custom cursor (matching homepage) */
+        #cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--white);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s, background 0.2s;
         }
-        @keyframes blinkFast {
-            0%, 100% { opacity: 0.2; text-shadow: 0 0 2px #fff; }
-            50% { opacity: 1; text-shadow: 0 0 12px #ffdd88, 0 0 6px #ffaa33; }
+
+        #cursor-ring {
+            position: fixed;
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s, transform 0.12s ease-out;
         }
-        @keyframes pulseRing {
-            0% { transform: scale(0.8); opacity: 0.5; }
-            100% { transform: scale(1.4); opacity: 0; }
+
+        a:hover~#cursor-ring,
+        button:hover~#cursor-ring,
+        .contact-card:hover~#cursor-ring {
+            width: 60px;
+            height: 60px;
+            border-color: var(--gold);
         }
-        .car-light-sweep {
-            background: linear-gradient(90deg, rgba(255,255,240,0.03) 0%, rgba(255,220,100,0.5) 25%, rgba(255,255,210,0.85) 50%, rgba(255,220,100,0.5) 75%, rgba(255,255,240,0.03) 100%);
-            background-size: 200% auto;
-            animation: lightSweep 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+        /* noise overlay (same as homepage) */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9997;
+            opacity: 0.6;
         }
-        .blinking-led {
-            animation: blinkFast 1.2s ease-in-out infinite;
+
+        /* scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
         }
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a3a;
+            border-radius: 4px;
+        }
+
+        /* nav styling (identical to homepage) */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            padding: 0 clamp(1.5rem, 5vw, 4rem);
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(5, 5, 8, 0.7);
+            backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.4s;
+        }
+        nav.scrolled {
+            background: rgba(5, 5, 8, 0.95);
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1a1a28, #2a2a40);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--silver-light);
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1));
+        }
+        .nav-logo-text {
+            font-family: var(--font-display);
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+        .nav-logo-sub {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--silver);
+            letter-spacing: 3px;
+            display: block;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--silver);
+            text-decoration: none;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.3s;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--white);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: var(--white);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-cta {
+            padding: 10px 24px;
+            border-radius: 50px;
+            background: var(--white);
+            color: var(--black);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        .nav-cta:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(200,212,232,0.3);
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: none;
+            padding: 8px;
+        }
+        .hamburger span {
+            width: 24px;
+            height: 1.5px;
+            background: var(--white);
+            display: block;
+            transition: all 0.3s;
+        }
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(4.5px, 4.5px);
+        }
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(4.5px, -4.5px);
+        }
+        .mobile-nav {
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 5, 8, 0.98);
+            backdrop-filter: blur(40px);
+            z-index: 800;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+        .mobile-nav.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .mobile-nav a {
+            font-family: var(--font-display);
+            font-size: 48px;
+            letter-spacing: 4px;
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+        .mobile-nav a:hover {
+            color: var(--silver);
+        }
+
+        /* hero section with animated overlay (homepage style) */
+        .contact-hero {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            margin-top: 72px;
+        }
+        .hero-bg-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 30%, rgba(232,201,122,0.08), transparent 70%);
+            z-index: 0;
+        }
+        .hero-overlay-dark {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(5,5,8,0.4) 0%, rgba(5,5,8,0.9) 100%);
+            z-index: 1;
+        }
+        .contact-hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 960px;
+            padding: 0 clamp(1.5rem, 5vw, 4rem);
+            animation: heroReveal 1.2s cubic-bezier(0.4,0,0.2,1) both;
+        }
+        @keyframes heroReveal {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-bright);
+            backdrop-filter: blur(12px);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--silver-light);
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            animation: badgePulse 2s ease-in-out infinite;
+            box-shadow: 0 0 0 0 rgba(232,201,122,0.4);
+        }
+        @keyframes badgePulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(232,201,122,0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(232,201,122,0); }
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(56px, 10vw, 120px);
+            line-height: 0.9;
+            letter-spacing: 3px;
+            color: var(--white);
+        }
+        .hero-title .line-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, #f5e2b0 60%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-sub {
+            font-size: clamp(14px, 2vw, 18px);
+            color: rgba(200,210,225,0.8);
+            max-width: 560px;
+            margin: 24px auto 0;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        /* section label & title (homepage style) */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 20px;
+        }
+        .section-label::before {
+            content: '//';
+            color: var(--gold);
+        }
+        h2.section-title {
+            font-family: var(--font-display);
+            font-size: clamp(48px, 7vw, 96px);
+            line-height: 0.9;
+            letter-spacing: 3px;
+            color: var(--white);
+            margin-bottom: 24px;
+        }
+        h2.section-title em {
+            font-style: normal;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+        }
+
+        /* contact cards & form (homepage material style) */
         .contact-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 4px;
             transition: all 0.3s ease;
         }
         .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            border-color: var(--border-bright);
+            transform: translateY(-4px);
         }
-        .ring-animation {
+        .form-group input, .form-group textarea, .form-group select {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 14px 16px;
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--silver);
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 0 0 3px rgba(168,176,191,0.08);
+        }
+        .form-submit {
+            width: 100%;
+            padding: 16px;
+            border-radius: 4px;
+            background: var(--white);
+            color: var(--black);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+            border: none;
+            cursor: none;
             position: relative;
+            overflow: hidden;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        .ring-animation::after {
+        .form-submit::after {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,215,0,0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            animation: pulseRing 1.5s infinite;
-            pointer-events: none;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
         }
-        .input-focus-glow:focus {
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.2), 0 0 0 1px rgba(255,255,255,0.5);
-            outline: none;
+        .form-submit:hover::after {
+            transform: translateX(100%);
+        }
+        .form-submit:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+        .btn-ghost-sm {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 4px;
+            border: 1px solid var(--border-bright);
+            color: var(--white);
+            background: rgba(255,255,255,0.03);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .btn-ghost-sm:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--silver);
+        }
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: var(--silver);
+            transition: all 0.3s;
+        }
+        .social-icon:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--border-bright);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* footer (identical to homepage) */
+        footer {
+            background: var(--deep);
+            border-top: 1px solid var(--border);
+            padding: 80px clamp(1.5rem,5vw,4rem) 32px;
+        }
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+        .footer-brand p {
+            color: rgba(180,190,210,0.5);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-top: 16px;
+            max-width: 280px;
+            font-weight: 300;
+        }
+        .footer-col h4 {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 20px;
+        }
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-col a {
+            color: rgba(180,190,210,0.6);
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-col a:hover {
+            color: var(--white);
+        }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+        .footer-bottom p {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.2);
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: none;
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: none;
+        }
+        @media (max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta { display: none; }
+            .hamburger { display: flex; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .hero-title { font-size: clamp(48px, 12vw, 80px); }
+            .contact-hero { min-height: 50vh; }
+        }
+        @media (max-width: 480px) {
+            .hero-title { letter-spacing: 2px; }
+            .btn-ghost-sm { width: 100%; justify-content: center; }
+        }
+        @media (hover: none) {
+            body { cursor: auto; }
+            #cursor-dot, #cursor-ring { display: none; }
+            a, button { cursor: pointer; }
+        }
+        #toast {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 9999;
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-bright);
+            border-radius: 8px;
+            padding: 16px 24px;
+            color: var(--white);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 1px;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: transform 0.4s, opacity 0.4s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        #toast.show {
+            transform: none;
+            opacity: 1;
+        }
+        #toast i {
+            color: var(--gold);
         }
     </style>
 </head>
-<body class="bg-black text-gray-200">
+<body>
 
-    <!-- ========== NAVIGATION ========== -->
-    <nav class="bg-black/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-4 flex flex-wrap justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-car-side text-3xl text-gray-300 blinking-led"></i>
-                <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent">3K AUTO</span>
-                <span class="text-xs font-light border-l border-white/30 pl-2 ml-1 hidden sm:inline">BODY REPAIRS</span>
-            </div>
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="index.html" class="hover:text-white text-gray-300 transition">HOME</a>
-                <a href="about.html" class="hover:text-white text-gray-300 transition">ABOUT</a>
-                <a href="services.html" class="hover:text-white text-gray-300 transition">SERVICES</a>
-                <a href="contact.html" class="hover:text-white text-white border-b-2 border-white/60 pb-1">CONTACT</a>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="#" class="hidden sm:inline-block px-5 py-2 text-sm font-semibold rounded-full bg-white text-black hover:bg-gray-200 transition shadow-lg">GET QUOTE</a>
-                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl focus:outline-none"><i class="fas fa-bars"></i></button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="md:hidden hidden flex-col bg-black/95 border-t border-white/10 px-6 pb-5 space-y-3 text-base font-medium">
-            <a href="index.html" class="block py-2 text-gray-200 hover:text-white">HOME</a>
-            <a href="about.html" class="block py-2 text-gray-200 hover:text-white">ABOUT</a>
-            <a href="services.html" class="block py-2 text-gray-200 hover:text-white">SERVICES</a>
-            <a href="contact.html" class="block py-2 text-white">CONTACT</a>
-            <a href="contact.html" class="block py-2 text-center bg-white text-black rounded-full mt-2">GET QUOTE</a>
-        </div>
-    </nav>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg">Message sent!</span></div>
 
-    <!-- ========== HERO SECTION with car light animation ========== -->
-    <section class="relative overflow-hidden bg-black">
-        <div class="absolute inset-0 car-light-sweep opacity-40 pointer-events-none"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black"></div>
-        <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-20 md:py-28 z-10">
-            <div class="text-center max-w-4xl mx-auto">
-                <div class="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/20 mb-5">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
-                    </span>
-                    <span class="text-xs uppercase tracking-wider text-gray-300">Reach Mma Dipente</span>
-                </div>
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">
-                    <span class="text-white">Let's Connect</span><br>
-                    <span class="bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">Get Your Free Estimate</span>
-                </h1>
-                <p class="text-gray-300 text-xl mt-6 max-w-2xl mx-auto leading-relaxed">
-                    Whether you need a quote, expert advice, or want to experience Red Seal craftsmanship — Mma Dipente and the team are ready to assist.
-                </p>
-            </div>
+<nav id="navbar">
+    <a href="#" class="nav-logo">
+        <div class="nav-logo-icon"><i class="fas fa-spray-can"></i></div>
+        <div>
+            <span class="nav-logo-text">3K AUTO</span>
+            <span class="nav-logo-sub">BODY REPAIRS</span>
         </div>
-        <!-- animated car light strip bottom -->
-        <div class="flex justify-center gap-3 pb-5">
-            <div class="w-10 h-1.5 bg-white/40 rounded-full blinking-led"></div>
-            <div class="w-10 h-1.5 bg-gray-500/60 rounded-full"></div>
-            <div class="w-10 h-1.5 bg-white/40 rounded-full blinking-led"></div>
-        </div>
-    </section>
+    </a>
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:16px;">
+        <a href="#contact-form-section" class="nav-cta">Get Quote</a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
 
-    <!-- ========== MAIN CONTACT SECTION: FORM + DETAILS ========== -->
-    <section class="py-20 bg-gradient-to-b from-black to-neutral-950">
-        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-            <div class="grid lg:grid-cols-2 gap-12">
-                <!-- Contact Information Cards -->
-                <div class="space-y-8">
-                    <div>
-                        <span class="text-gray-400 uppercase tracking-wider text-sm bg-white/5 px-4 py-1.5 rounded-full border border-white/10 inline-block mb-5"><i class="fas fa-heart mr-2 text-red-400"></i> Get In Touch</span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-white">Speak with <span class="text-gray-300">Mma Dipente</span></h2>
-                        <p class="text-gray-400 mt-3 leading-relaxed">We pride ourselves on personal service. Kelebogile responds to every inquiry personally — expect honest advice, transparent pricing, and genuine care.</p>
-                    </div>
-                    
-                    <!-- Contact Details Cards -->
-                    <div class="bg-white/5 rounded-2xl border border-white/10 p-6 contact-card">
-                        <div class="flex items-center gap-4 mb-5">
-                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center ring-animation relative">
-                                <i class="fas fa-phone-alt text-xl text-gray-200"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-white">Call or WhatsApp</h3>
-                                <p class="text-2xl font-bold text-gray-200 tracking-tight">+27 (0) 82 123 4567</p>
-                                <p class="text-gray-400 text-sm">Mon-Fri: 8am–5:30pm | Sat: 8am–1pm</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white/5 rounded-2xl border border-white/10 p-6 contact-card">
-                        <div class="flex items-center gap-4 mb-5">
-                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                                <i class="fas fa-envelope text-xl text-gray-200"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-white">Email Us</h3>
-                                <p class="text-xl font-medium text-gray-200">info@3kautobody.co.za</p>
-                                <p class="text-gray-400 text-sm">We reply within 24 hours</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white/5 rounded-2xl border border-white/10 p-6 contact-card">
-                        <div class="flex items-center gap-4 mb-5">
-                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                                <i class="fas fa-map-marker-alt text-xl text-gray-200"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-white">Workshop Location</h3>
-                                <p class="text-gray-200">Midrand / Pretoria region, Gauteng</p>
-                                <p class="text-gray-400 text-sm">Exact address provided upon appointment</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Social Links -->
-                    <div class="bg-white/5 rounded-2xl border border-white/10 p-6">
-                        <h3 class="text-lg font-semibold text-white mb-4">Follow Mma Dipente</h3>
-                        <div class="flex gap-4">
-                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fab fa-instagram text-gray-200"></i></a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fab fa-facebook-f text-gray-200"></i></a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fab fa-whatsapp text-gray-200"></i></a>
-                            <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fab fa-tiktok text-gray-200"></i></a>
-                        </div>
-                        <div class="mt-4 flex items-center gap-2">
-                            <i class="fas fa-check-circle text-green-500 text-sm"></i>
-                            <span class="text-gray-400 text-xs">Follow for behind-the-scenes & paint transformations</span>
-                        </div>
-                    </div>
-                </div>
+<div class="mobile-nav" id="mobile-nav">
+    <a href="#home" class="mobile-link">Home</a>
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#services" class="mobile-link">Services</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="#contact-form-section" style="color: var(--gold);" class="mobile-link">Get Quote →</a>
+</div>
+
+<!-- Hero section with homepage style -->
+<section class="contact-hero" id="home">
+    <div class="hero-bg-glow"></div>
+    <div class="hero-overlay-dark"></div>
+    <div class="contact-hero-content">
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Red Seal · Mma Dipente · Free Estimate
+        </div>
+        <h1 class="hero-title">
+            <span>Let's</span><br>
+            <span class="line-gold">Connect</span>
+        </h1>
+        <p class="hero-sub">
+            Reach out to Kelebogile Mothelesi — the Mother of Paint — for honest advice, Red Seal craftsmanship, and a free, no-obligation quote.
+        </p>
+    </div>
+</section>
+
+<!-- Main contact area: cards + form (homepage style) -->
+<section class="py-24 px-5 md:px-10" id="contact" style="background: var(--black);">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-16">
+            <!-- Contact info cards (homepage material) -->
+            <div>
+                <div class="section-label reveal">Reach Out</div>
+                <h2 class="section-title reveal reveal-delay-1">Speak with<br><em>Mma Dipente</em></h2>
+                <p class="text-gray-400 leading-relaxed mb-10 max-w-md reveal reveal-delay-2">Kelebogile personally answers every inquiry — expect genuine care, transparent pricing, and world-class auto body expertise.</p>
                 
-                <!-- Contact Form -->
-                <div class="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-8 shadow-2xl">
-                    <div class="mb-6 text-center">
-                        <i class="fas fa-paintbrush-fine text-3xl text-gray-300 blinking-led mb-2"></i>
-                        <h3 class="text-2xl font-bold text-white">Request Your Free Estimate</h3>
-                        <p class="text-gray-400 text-sm mt-1">Fill out the form and Mma Dipente will respond personally</p>
+                <div class="space-y-5">
+                    <div class="contact-card p-6 flex items-center gap-5 reveal-left">
+                        <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10"><i class="fas fa-phone-alt text-xl text-gold" style="color: var(--gold);"></i></div>
+                        <div><h3 class="font-bold text-white text-lg">Call or WhatsApp</h3><p class="text-silver-light text-xl font-mono">+27 (0) 82 123 4567</p><p class="text-gray-500 text-xs">Mon–Fri 8am–5:30pm · Sat 8am–1pm</p></div>
                     </div>
-                    
-                    <form id="contactForm" class="space-y-5">
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Full Name *</label>
-                                <input type="text" id="name" required class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Phone Number *</label>
-                                <input type="tel" id="phone" required class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow">
-                            </div>
+                    <div class="contact-card p-6 flex items-center gap-5 reveal-left reveal-delay-1">
+                        <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10"><i class="fas fa-envelope text-xl" style="color: var(--gold);"></i></div>
+                        <div><h3 class="font-bold text-white text-lg">Email Us</h3><p class="text-silver-light">info@3kautobody.co.za</p><p class="text-gray-500 text-xs">Response within 24 hours</p></div>
+                    </div>
+                    <div class="contact-card p-6 flex items-center gap-5 reveal-left reveal-delay-2">
+                        <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10"><i class="fas fa-map-marker-alt text-xl" style="color: var(--gold);"></i></div>
+                        <div><h3 class="font-bold text-white text-lg">Workshop Location</h3><p class="text-silver-light">Midrand / Pretoria region, Gauteng</p><p class="text-gray-500 text-xs">Address provided upon appointment</p></div>
+                    </div>
+                    <div class="contact-card p-6 reveal-left reveal-delay-3">
+                        <h3 class="font-bold text-white mb-3">Follow Mma Dipente</h3>
+                        <div class="flex gap-3">
+                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
                         </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">Email Address *</label>
-                            <input type="email" id="email" required class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">Vehicle Make, Model & Year</label>
-                            <input type="text" id="vehicle" placeholder="e.g., Toyota Hilux 2020" class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">Service Needed *</label>
-                            <select id="service" required class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white focus:border-gray-400 transition">
-                                <option value="" disabled selected>Select a service</option>
-                                <option>Spray Painting & Refinishing</option>
-                                <option>Panel Beating & Dent Removal</option>
-                                <option>Collision Repair</option>
-                                <option>Colour Matching</option>
-                                <option>Detailing & Paint Correction</option>
-                                <option>Custom Airbrushing</option>
-                                <option>Not sure / General inquiry</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">Message / Details *</label>
-                            <textarea id="message" rows="4" required placeholder="Describe the damage, areas needing repair, or any questions..." class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-gray-400 transition input-focus-glow"></textarea>
-                        </div>
-                        
-                        <div class="flex items-center gap-2 text-sm text-gray-400">
-                            <i class="fas fa-lock text-xs"></i>
-                            <span>Your info is private. We'll get back within 24h.</span>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-white text-black font-bold py-3.5 rounded-xl hover:bg-gray-200 transition flex items-center justify-center gap-2 group">
-                            <i class="fas fa-paper-plane group-hover:translate-x-1 transition"></i>
-                            Send Message & Get Quote
-                        </button>
-                    </form>
-                    
-                    <div class="mt-6 pt-4 border-t border-white/10 text-center">
-                        <div class="flex justify-center gap-1 mb-2">
-                            <div class="w-2 h-2 rounded-full bg-yellow-400 blinking-led"></div>
-                            <div class="w-2 h-2 rounded-full bg-white/40"></div>
-                            <div class="w-2 h-2 rounded-full bg-yellow-400 blinking-led"></div>
-                        </div>
-                        <p class="text-gray-500 text-xs">“Mma Dipente” personally reads every message</p>
+                        <p class="text-gray-500 text-xs mt-4"><i class="fas fa-check-circle text-green-500 mr-1"></i> Behind-the-scenes & paint transformations</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <!-- ========== WHY CONTACT US SECTION (value props) ========== -->
-    <section class="py-16 bg-black">
-        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-            <div class="grid md:grid-cols-3 gap-6 text-center">
-                <div class="p-6">
-                    <i class="fas fa-clock text-3xl text-gray-300 mb-3 blinking-led"></i>
-                    <h4 class="text-xl font-bold text-white">Fast Response</h4>
-                    <p class="text-gray-400 text-sm">Quotes within 24 hours. Transparent timelines.</p>
+            
+            <!-- Contact Form (homepage style) -->
+            <div class="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 p-6 md:p-8 reveal-right" id="contact-form-section">
+                <div class="text-center mb-6">
+                    <i class="fas fa-paintbrush-fine text-3xl" style="color: var(--gold);"></i>
+                    <h3 class="text-2xl font-bold text-white mt-2 font-display tracking-wide">Request Free Estimate</h3>
+                    <p class="text-gray-400 text-sm mt-1">Mma Dipente will respond personally</p>
                 </div>
-                <div class="p-6">
-                    <i class="fas fa-hand-sparkles text-3xl text-gray-300 mb-3"></i>
-                    <h4 class="text-xl font-bold text-white">Red Seal Guarantee</h4>
-                    <p class="text-gray-400 text-sm">Every estimate backed by master craftsmanship.</p>
-                </div>
-                <div class="p-6">
-                    <i class="fas fa-car text-3xl text-gray-300 mb-3"></i>
-                    <h4 class="text-xl font-bold text-white">Free Assessment</h4>
-                    <p class="text-gray-400 text-sm">No-obligation inspection & detailed quote.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ========== MAP / LOCATION HIGHLIGHT ========== -->
-    <section class="py-16 bg-gradient-to-b from-neutral-950 to-black border-y border-white/10">
-        <div class="max-w-6xl mx-auto px-5 sm:px-8">
-            <div class="text-center mb-8">
-                <i class="fas fa-location-dot text-3xl text-gray-300 mb-2"></i>
-                <h3 class="text-2xl font-bold text-white">Visit Our Workshop</h3>
-                <p class="text-gray-400 mt-2">Conveniently located in Gauteng — serving Midrand, Pretoria, Johannesburg and surrounds</p>
-            </div>
-            <div class="bg-white/5 rounded-2xl border border-white/10 p-4 text-center">
-                <div class="w-full h-64 bg-gray-800 rounded-xl flex flex-col items-center justify-center gap-3">
-                    <i class="fas fa-map-marked-alt text-5xl text-gray-500"></i>
-                    <p class="text-gray-400 text-sm">📍 Exact address provided upon appointment confirmation</p>
-                    <p class="text-gray-500 text-xs">We operate by appointment to ensure personal attention</p>
-                    <div class="flex gap-2 mt-2">
-                        <i class="fas fa-phone-alt text-gray-500"></i>
-                        <span class="text-gray-400 text-sm">Call ahead: +27 (0) 82 123 4567</span>
+                <form id="contactForm" class="space-y-5">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="form-group"><label class="text-xs font-mono uppercase tracking-wider text-silver">Full Name *</label><input type="text" id="name" required placeholder="Kelebogile Mothelesi"></div>
+                        <div class="form-group"><label class="text-xs font-mono uppercase tracking-wider text-silver">Phone *</label><input type="tel" id="phone" required placeholder="+27 82 123 4567"></div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ========== BUSINESS HOURS + NOTE ========== -->
-    <section class="py-16 bg-black">
-        <div class="max-w-4xl mx-auto px-5 text-center">
-            <div class="bg-white/5 rounded-2xl border border-white/10 p-8">
-                <i class="fas fa-calendar-alt text-3xl text-gray-300 mb-3"></i>
-                <h3 class="text-2xl font-bold text-white">Workshop Hours</h3>
-                <div class="grid sm:grid-cols-2 gap-4 mt-6 max-w-md mx-auto">
-                    <div class="text-left">
-                        <p class="text-gray-300"><span class="text-white font-semibold">Monday - Friday:</span> 8:00 – 17:30</p>
-                        <p class="text-gray-300 mt-2"><span class="text-white font-semibold">Saturday:</span> 8:00 – 13:00</p>
+                    <div class="form-group"><label class="text-xs font-mono uppercase tracking-wider text-silver">Email *</label><input type="email" id="email" required placeholder="hello@example.com"></div>
+                    <div class="form-group"><label class="text-xs font-mono uppercase tracking-wider text-silver">Vehicle (make, model, year)</label><input type="text" id="vehicle" placeholder="e.g., Toyota Hilux 2020"></div>
+                    <div class="form-group"><label class="text-xs font-mono uppercase tracking-wider text-silver">Service Needed *</label>
+                        <select id="service" required>
+                            <option value="" disabled selected>Select a service</option>
+                            <option>Spray Painting & Refinishing</option><option>Panel Beating & Dent Removal</option><option>Collision Repair</option><option>Colour Matching</option><option>Detailing & Polishing</option><option>Custom Airbrushing</option><option>General inquiry / Other</option>
+                        </select>
                     </div>
-                    <div class="text-left">
-                        <p class="text-gray-300"><span class="text-white font-semibold">Sunday:</span> Closed</p>
-                        <p class="text-gray-400 text-sm mt-2">Emergency inquiries? WhatsApp anytime.</p>
-                    </div>
-                </div>
-                <div class="mt-6 pt-4 border-t border-white/10 text-gray-400 text-sm">
-                    <i class="fas fa-heart text-red-500"></i> After-hours & mobile assessments available on request
-                </div>
+                    <div class="form-group"><label class="text-xs font-mono uppercase tracking-wider text-silver">Message / Details *</label><textarea id="message" rows="4" required placeholder="Describe damage, areas needing repair, or any questions..."></textarea></div>
+                    <button type="submit" class="form-submit"><i class="fas fa-paper-plane"></i> Send & Get Free Quote</button>
+                </form>
+                <div class="mt-6 pt-4 border-t border-white/10 text-center"><p class="text-gray-500 text-xs"><i class="fas fa-lock mr-1"></i> Your info is private. Mma Dipente replies within 24h.</p></div>
             </div>
         </div>
-    </section>
-    
-    <!-- ========== FAQ ACCORDION (quick answers) ========== -->
-    <section class="py-16 bg-gradient-to-b from-neutral-950 to-black">
-        <div class="max-w-4xl mx-auto px-5">
-            <h3 class="text-2xl font-bold text-white text-center mb-8">Quick Answers <span class="text-gray-300">Before You Call</span></h3>
-            <div class="space-y-4">
-                <div class="bg-white/5 rounded-xl border border-white/10 p-5">
-                    <p class="font-semibold text-white"><i class="fas fa-question-circle text-gray-400 mr-2"></i> Do you provide free estimates?</p>
-                    <p class="text-gray-400 text-sm mt-1">Yes, absolutely. We offer free, no-obligation quotes for all auto body repairs.</p>
-                </div>
-                <div class="bg-white/5 rounded-xl border border-white/10 p-5">
-                    <p class="font-semibold text-white"><i class="fas fa-question-circle text-gray-400 mr-2"></i> Can I visit the workshop without an appointment?</p>
-                    <p class="text-gray-400 text-sm mt-1">We recommend booking an appointment so Mma Dipente can personally attend to your vehicle without wait times.</p>
-                </div>
-                <div class="bg-white/5 rounded-xl border border-white/10 p-5">
-                    <p class="font-semibold text-white"><i class="fas fa-question-circle text-gray-400 mr-2"></i> Do you assist with insurance claims?</p>
-                    <p class="text-gray-400 text-sm mt-1">Yes, we work with all major insurers and help streamline the claims process for accident repairs.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ========== FOOTER ========== -->
-    <footer class="bg-black border-t border-white/10 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-                <div class="flex items-center gap-2"><i class="fas fa-car-side text-2xl text-gray-400"></i><span class="text-xl font-bold text-white">3K Auto Body</span></div>
-                <p class="text-gray-500 text-sm mt-3">Red Seal spray painting, panel beating & female-led empowerment. Where quality meets heart.</p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-3">Quick Links</h4>
-                <ul class="space-y-2 text-sm text-gray-400"><li><a href="#" class="hover:text-white">Home</a></li><li><a href="#" class="hover:text-white">About Mma Dipente</a></li><li><a href="#" class="hover:text-white">Services</a></li><li><a href="#" class="hover:text-white">Contact</a></li></ul>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-3">Our Promise</h4>
-                <p class="text-gray-400 text-sm">Honest assessments, rural development initiatives, and world-class auto body repairs by a certified master craftswoman.</p>
-            </div>
-            <div>
-                <h4 class="font-semibold text-white mb-3">Connect</h4>
-                <p class="text-gray-400 text-sm"><i class="fas fa-phone-alt mr-2"></i> +27 (0) 82 123 4567</p>
-                <p class="text-gray-400 text-sm mt-1"><i class="fas fa-envelope mr-2"></i> info@3kautobody.co.za</p>
-            </div>
-        </div>
-        <div class="text-center text-gray-600 text-xs mt-12 pt-6 border-t border-white/5">© 2025 3K Auto Body Repairs — "Mother of Paint" Craftsmanship. All rights reserved.</div>
-    </footer>
+    </div>
+</section>
 
-    <script>
-        // mobile menu toggle
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if(menuBtn) {
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-        }
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-        
-        // contact form handling with visual feedback
-        const form = document.getElementById('contactForm');
-        if(form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                // collect basic data for demo alert
-                const name = document.getElementById('name')?.value || '';
-                const service = document.getElementById('service')?.value || '';
-                alert(`✨ Thank you ${name}! Your ${service} request has been sent.\n\nMma Dipente will contact you within 24 hours with a free estimate.`);
-                form.reset();
-            });
-        }
-    </script>
+<!-- value props (homepage consistency) -->
+<section class="py-20 bg-deep" style="background: var(--deep);">
+    <div class="max-w-7xl mx-auto px-5 md:px-10">
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+            <div class="p-6 reveal"><i class="fas fa-clock text-3xl mb-3" style="color: var(--gold);"></i><h4 class="text-xl font-bold text-white">Fast Response</h4><p class="text-gray-400 text-sm">Quotes within 24 hours. Transparent timelines.</p></div>
+            <div class="p-6 reveal reveal-delay-1"><i class="fas fa-hand-sparkles text-3xl mb-3" style="color: var(--gold);"></i><h4 class="text-xl font-bold text-white">Red Seal Guarantee</h4><p class="text-gray-400 text-sm">Backed by master craftsmanship & 7+ years expertise.</p></div>
+            <div class="p-6 reveal reveal-delay-2"><i class="fas fa-car text-3xl mb-3" style="color: var(--gold);"></i><h4 class="text-xl font-bold text-white">Free Assessment</h4><p class="text-gray-400 text-sm">No-obligation inspection & detailed quote.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- business hours & quick answers (homepage aesthetic) -->
+<section class="py-20 bg-black">
+    <div class="max-w-6xl mx-auto px-5">
+        <div class="bg-white/5 border border-white/10 rounded-lg p-8 text-center reveal">
+            <i class="fas fa-calendar-alt text-3xl mb-3" style="color: var(--gold);"></i>
+            <h3 class="text-2xl font-bold text-white">Workshop Hours</h3>
+            <div class="grid sm:grid-cols-2 gap-4 mt-6 max-w-md mx-auto">
+                <div><p class="text-gray-300"><span class="text-white font-semibold">Mon–Fri:</span> 8:00 – 17:30</p><p class="text-gray-300 mt-2"><span class="text-white font-semibold">Sat:</span> 8:00 – 13:00</p></div>
+                <div><p class="text-gray-300"><span class="text-white font-semibold">Sun:</span> Closed</p><p class="text-gray-400 text-sm mt-2">Emergency? WhatsApp anytime.</p></div>
+            </div>
+        </div>
+        <div class="mt-12 space-y-4">
+            <h3 class="text-2xl font-bold text-white text-center font-display">Quick Answers</h3>
+            <div class="bg-white/5 rounded-lg border border-white/10 p-5"><p class="font-semibold text-white"><i class="fas fa-question-circle mr-2" style="color: var(--gold);"></i> Free estimates?</p><p class="text-gray-400 text-sm">Yes, all quotes are free and no-obligation.</p></div>
+            <div class="bg-white/5 rounded-lg border border-white/10 p-5"><p class="font-semibold text-white"><i class="fas fa-question-circle mr-2" style="color: var(--gold);"></i> Insurance claims?</p><p class="text-gray-400 text-sm">We work with all major insurers and assist with claim processes.</p></div>
+            <div class="bg-white/5 rounded-lg border border-white/10 p-5"><p class="font-semibold text-white"><i class="fas fa-question-circle mr-2" style="color: var(--gold);"></i> Appointment needed?</p><p class="text-gray-400 text-sm">Appointments recommended so Mma Dipente can personally assist.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer identical to homepage -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand"><a href="#" class="nav-logo" style="text-decoration:none;"><div class="nav-logo-icon"><i class="fas fa-spray-can"></i></div><div><span class="nav-logo-text">3K AUTO</span><span class="nav-logo-sub">BODY REPAIRS</span></div></a><p>Red Seal spray painting, panel beating & female-led empowerment. Where quality meets heart, in every coat.</p><div class="footer-social"><a href="#" class="social-btn"><i class="fab fa-instagram"></i></a><a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a><a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a><a href="#" class="social-btn"><i class="fab fa-tiktok"></i></a></div></div>
+        <div class="footer-col"><h4>Navigate</h4><ul><li><a href="#home">Home</a></li><li><a href="#about">About Mma Dipente</a></li><li><a href="#services">Services</a></li><li><a href="#contact">Contact</a></li></ul></div>
+        <div class="footer-col"><h4>Services</h4><ul><li><a href="#">Spray Painting</a></li><li><a href="#">Panel Beating</a></li><li><a href="#">Collision Repair</a></li><li><a href="#">Colour Matching</a></li><li><a href="#">Airbrushing</a></li></ul></div>
+        <div class="footer-col"><h4>Workshop</h4><ul><li><a href="#">Mon–Fri 08:00–17:30</a></li><li><a href="#">Sat 08:00–13:00</a></li><li><a href="#">Sun Closed</a></li><li><a href="tel:+27821234567">+27 (0) 82 123 4567</a></li><li><a href="mailto:info@3kautobody.co.za">info@3kautobody.co.za</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 3K AUTO BODY REPAIRS — "MMA DIPENTE" CRAFTSMANSHIP</p><p class="footer-hours">MIDRAND / PRETORIA · BY APPOINTMENT</p></div>
+</footer>
+
+<script>
+    // cursor logic
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animateCursor() {
+        dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+        rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    document.querySelectorAll('a, button, .contact-card').forEach(el => {
+        el.addEventListener('mouseenter', () => { ring.style.width = '56px'; ring.style.height = '56px'; ring.style.borderColor = 'rgba(232,201,122,0.6)'; dot.style.transform = 'translate(-50%,-50%) scale(0.5)'; });
+        el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'rgba(255,255,255,0.4)'; dot.style.transform = 'translate(-50%,-50%) scale(1)'; });
+    });
+    // navbar scroll
+    window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60); });
+    // mobile menu
+    const ham = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    ham.addEventListener('click', () => { ham.classList.toggle('open'); mobileNav.classList.toggle('open'); document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : ''; });
+    document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => { ham.classList.remove('open'); mobileNav.classList.remove('open'); document.body.style.overflow = ''; }));
+    // reveal observer
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+    // form submit
+    document.getElementById('contactForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-msg').textContent = '✨ Thanks! Mma Dipente will reply within 24h with your free estimate.';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+        e.target.reset();
+    });
+</script>
 </body>
 </html>
